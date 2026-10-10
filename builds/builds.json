@@ -1,0 +1,50 @@
+{
+  "_comment": "Each build lists piece ids from configs/pieces.yaml with counts. 'color' is optional; omit it when any color works.",
+  "builds": [
+    {
+      "id": "tower_simple",
+      "name": "Simple tower",
+      "category": "tower",
+      "parts": [
+        {"piece": "brick_2x2", "count": 8},
+        {"piece": "plate_2x2", "count": 1},
+        {"piece": "slope45_2x1", "count": 2}
+      ]
+    },
+    {
+      "id": "wall_low",
+      "name": "Low wall with window",
+      "category": "wall",
+      "parts": [
+        {"piece": "brick_2x4", "count": 4},
+        {"piece": "brick_1x2", "count": 4},
+        {"piece": "window_1x2x2", "count": 1},
+        {"piece": "plate_2x4", "count": 1}
+      ]
+    },
+    {
+      "id": "bridge_flat",
+      "name": "Flat bridge",
+      "category": "bridge",
+      "parts": [
+        {"piece": "brick_2x2", "count": 6},
+        {"piece": "plate_2x4", "count": 4},
+        {"piece": "plate_1x2", "count": 4}
+      ]
+    },
+    {
+      "id": "house_tiny",
+      "name": "Tiny house",
+      "category": "house",
+      "parts": [
+        {"piece": "brick_2x4", "count": 6},
+        {"piece": "brick_1x2", "count": 6},
+        {"piece": "brick_1x4", "count": 2},
+        {"piece": "door_frame_1x4x6", "count": 1},
+        {"piece": "window_1x2x2", "count": 2},
+        {"piece": "slope45_2x2", "count": 6},
+        {"piece": "plate_2x4", "count": 2}
+      ]
+    }
+  ]
+}

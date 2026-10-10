@@ -1,0 +1,5 @@
+torch>=2.3
+torchvision>=0.18
+ultralytics>=8.3
+pillow
+pyyaml

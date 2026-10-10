@@ -1,0 +1,7 @@
+# Ultralytics dataset file for stage 1. One class: every piece is just "piece".
+path: ../data/detect
+train: images/train
+val: images/val
+test: images/test
+names:
+  0: piece

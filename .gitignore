@@ -1,0 +1,13 @@
+# Data and model weights stay out of git (too large); keep folder structure via .gitkeep
+data/**/*
+!data/**/
+!data/**/.gitkeep
+*.pt
+*.pth
+*.onnx
+runs/
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+.DS_Store

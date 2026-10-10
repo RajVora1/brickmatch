@@ -1,0 +1,12 @@
+# Colors supported in v1. Names follow Rebrickable/BrickLink naming.
+# Start by predicting color from the median pixel color of each detected box (no training needed),
+# then upgrade to a small crop classifier if lighting makes that unreliable.
+colors:
+  - {id: red,               rgb: [201, 26, 9]}
+  - {id: blue,              rgb: [0, 85, 191]}
+  - {id: yellow,            rgb: [242, 205, 55]}
+  - {id: green,             rgb: [35, 120, 65]}
+  - {id: black,             rgb: [5, 19, 29]}
+  - {id: white,             rgb: [255, 255, 255]}
+  - {id: light_bluish_gray, rgb: [160, 165, 169]}
+  - {id: tan,               rgb: [228, 205, 158]}
