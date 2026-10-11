@@ -65,18 +65,18 @@ Run commands from this folder. A GPU helps from step 4 on; Google Colab or Kaggl
 
 ## Progress log
 
-Newest entry first. One entry per week, copy the template below.
+Newest entry first. One entry per week. Weeks run Thursday to Wednesday, so each entry is due Wednesday 11:59 pm. Copy the template below.
 
 ```
-### YYYY-MM-DD (week N)
+### Week N (Thu YYYY-MM-DD to Wed YYYY-MM-DD)
 - **Done:**
 - **Results:** (numbers: accuracy, counting error, dataset size)
 - **Blockers:**
 - **Next:**
 ```
 
-### 2026-10-10 (week 1)
-- **Done:** Scoped the project to 12 common piece types and four build categories (towers, bridges, walls, houses). Switched to a two-stage design on my mentor's advice (2026-10-06): a YOLO model finds every piece as one generic class, then a crop classifier (ResNet-18, compared with ViT-B/16) names the type. Built the starter code: piece/color configs, builds database, matcher, pipeline, training scripts for both stages, evaluation script, labeling guide and dataset notes.
-- **Results:** No trained models yet. The matcher works end to end on hand-typed counts (`python -m brickmatch.match '{"brick_2x2": 8}'`).
+### Week 3 (Thu 2026-10-08 to Wed 2026-10-14)
+- **Done:** Scoped the project to 12 common piece types and four build categories (towers, bridges, walls, houses). Switched to a two-stage design on my mentor's advice (2026-10-06): a YOLO model finds every piece as one generic class, then a crop classifier (ResNet-18, compared with ViT-B/16) names the type. Built the starter code: piece/color configs, builds database, matcher, pipeline, training scripts for both stages, evaluation script, labeling guide and dataset notes. Bought a LEGO Classic Large Creative Brick Box (10698) for my own photos and narrowed tier 1 to the 8 types it stocks well. Set up Google Colab and trained a warm-up ResNet-18 classifier on the Kaggle "Images of LEGO Bricks" renders.
+- **Results:** Warm-up ResNet-18 (5 epochs): val acc 95.4%, test acc 96.3%. The test set is rendered images, not my photos, so this is optimistic; it mainly proves the training setup works. The matcher works end to end on hand-typed counts (`python -m brickmatch.match '{"brick_2x2": 8}'`).
 - **Blockers:** None. Training will run on Colab (free GPU).
-- **Next:** Warm-up classifier on a public LEGO dataset in Colab, grow `builds.json` to ~20 builds, start photographing and labeling my own piles.
+- **Next:** Photograph single-type and mixed piles once the LEGO box arrives, box-label the first mixed-pile photos, grow `builds.json` to ~20 builds.
