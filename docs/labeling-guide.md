@@ -15,7 +15,7 @@ BrickMatch uses two models, so there are two kinds of labels, and both are cheap
 
 ## Labeling boxes (stage 1)
 - Tool: [Label Studio](https://labelstud.io) or [CVAT](https://www.cvat.ai), free and local. Export in **YOLO format** into `data/detect/images/<split>/` and `data/detect/labels/<split>/`.
-- One tight box per visible piece, one class: `piece`. Include pieces outside the 12 types too, since the detector should find all of them.
+- One tight box per visible piece, one class: `piece`. Include pieces outside the tier-1 types too, since the detector should find all of them.
 - Mostly hidden pieces (under ~30% visible): box them anyway.
 - Speed-up once a first detector exists: let it pre-draw boxes and only fix its mistakes.
 
