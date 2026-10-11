@@ -31,14 +31,15 @@ Two-stage design (mentor's advice): finding pieces and naming them are separate 
 
 ## Starting piece list (recommendation, adjust freely)
 
-12 tier-1 types chosen to cover all four build categories while staying visually distinct:
+8 tier-1 types, all well stocked in the LEGO Classic Large Creative Brick Box (10698) used for data collection:
 
 - **Bricks:** 1x1, 1x2, 1x4, 2x2, 2x4
-- **Plates:** 1x2, 2x2, 2x4
+- **Plates:** 1x2
 - **Slopes 45°:** 2x1, 2x2
-- **House parts:** window 1x2x2, door frame 1x4x6
 
-Tier 2, add once tier 1 works: brick 2x3, plate 1x4, tile 1x2. They're left out at first because they're the classic confusions.
+Tier 2, add once tier 1 works:
+- plate 2x2, plate 2x4, window 1x2x2, door frame 1x4x6: needed for houses, but 10698 has too few of them (a Pick a Brick top-up fixes that)
+- brick 2x3, plate 1x4, tile 1x2: left out at first because they're the classic confusions
 
 **Color is not part of the class.** The classifier predicts type; color comes from the median pixel inside each box, matched to `colors.yaml`.
 
