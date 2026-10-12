@@ -1,6 +1,6 @@
-# BrickMatch: this week's plan (2026-10-10 to 2026-10-17)
+# BrickMatch: week 3 plan (Thu 2026-10-08 to Wed 2026-10-14)
 
-Five things to finish by next Saturday. They're ordered so each one feeds the next, and none needs a trained model yet.
+Five things to finish by Wednesday 2026-10-14, 11:59 pm. They're ordered so each one feeds the next, and none needs a trained model yet.
 
 | # | Task | Rough time | Done when |
 |---|---|---|---|
@@ -8,9 +8,9 @@ Five things to finish by next Saturday. They're ordered so each one feeds the ne
 | 2 | Photograph single-type piles | 1-2 h | One folder of photos per tier-1 piece in `data/raw/single_type/` |
 | 3 | Photograph mixed piles + box-label a few | 3-4 h | ~10 piles shot, true counts written down, 5+ photos boxed |
 | 4 | Get Colab working and train a warm-up classifier | 2-3 h | A ResNet-18 trained on a public LEGO dataset, with an accuracy number |
-| 5 | Write the week 2 progress-log entry | 15 min | New entry at the top of the README's Progress log |
+| 5 | Finish the week 3 progress-log entry | 15 min | Week 3 entry in the README's Progress log has this week's numbers |
 
-Suggested order: 1 and 2 this weekend (Sat/Sun), 4 on a weeknight (it runs in the background while you do 3), 3 spread over the week, 5 next Saturday.
+Suggested order: 1 and 2 this weekend (Sat/Sun), 4 on a weeknight (it runs in the background while you do 3), 3 spread over the week, 5 on Wednesday.
 
 ---
 
@@ -162,12 +162,12 @@ drive.mount("/content/drive")
 
 Optional if you finish early: open `runs/classifier_resnet18_1.0.confusion.json` and see which pieces get mixed up (likely 1x2 vs 1x4 bricks, or bricks vs plates).
 
-## 5. Write the week 2 progress-log entry
+## 5. Finish the week 3 progress-log entry
 
-Next Saturday (2026-10-17), add a new entry **above** the week 1 entry in `README.md`, using the template:
+By Wednesday 2026-10-14, 11:59 pm, update the week 3 entry at the top of the README's Progress log so it covers the whole week. Weeks run Thursday to Wednesday, so week 4 starts Thursday 2026-10-15 with a new entry. Roughly:
 
 ```markdown
-### 2026-10-17 (week 2)
+### Week 3 (Thu 2026-10-08 to Wed 2026-10-14)
 - **Done:** Finalized piece list (N tier-1 types). Shot single-type piles for N types (N photos). Shot N mixed piles (N photos) with true counts; boxed N photos. Set up Colab and trained a warm-up ResNet-18 on the Kaggle LEGO renders.
 - **Results:** Warm-up classifier: val acc X, test acc X on N classes (rendered images, so optimistic). Dataset so far: N single-type photos, N mixed photos, N boxes.
 - **Blockers:** (anything that slowed you down, e.g. labeling speed, missing parts in the public set)

@@ -74,7 +74,7 @@ os.environ["KAGGLE_API_TOKEN"] = userdata.get("KAGGLE_API_TOKEN")
 ```
 The last line should list `README.md`, `configs`, `train`, and so on. The first time, Colab may pop up "Grant access to secret?". Click **Grant access**.
 
-**Cell 3 onward:** continue with Cells 2 to 5 from section 4b of `docs/week-2-plan.md`: download the dataset, sort it into `data/crops`, train, and save to Drive. In that plan, Cell 1 is replaced by Cell 2 here, so skip it.
+**Cell 3 onward:** continue with Cells 2 to 5 from section 4b of `docs/week-3-plan.md`: download the dataset, sort it into `data/crops`, train, and save to Drive. In that plan, Cell 1 is replaced by Cell 2 here, so skip it.
 
 ---
 
