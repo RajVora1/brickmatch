@@ -1,7 +1,7 @@
 # BrickMatch v1 piece vocabulary.
 # The detector predicts `type` only; color is a separate attribute (see colors.yaml).
 # Part numbers are BrickLink/LDraw IDs so you can cross-reference Rebrickable and render LDraw models.
-# Tier 1 = start here (8 types, all well stocked in LEGO Classic 10698). Tier 2 = add once tier 1 works
+# Tier 1 = start here (8 types Raj owns in quantity). Tier 2 = add once tier 1 works
 # on your own photos, or once you own ~10+ of the piece (plates 2x2/2x4, window, door frame need a top-up order).
 
 pieces:
@@ -14,11 +14,11 @@ pieces:
   - {id: brick_2x4,  part: "3001", name: "Brick 2 x 4",  tier: 1}
   # --- Plates ---
   - {id: plate_1x2,  part: "3023", name: "Plate 1 x 2",  tier: 1}
-  - {id: plate_1x4,  part: "3710", name: "Plate 1 x 4",  tier: 2}
+  - {id: plate_1x4,  part: "3710", name: "Plate 1 x 4",  tier: 1}  # replaces slope 2x1, which the box turned out not to have
   - {id: plate_2x2,  part: "3022", name: "Plate 2 x 2",  tier: 2}  # only 2 in 10698
   - {id: plate_2x4,  part: "3020", name: "Plate 2 x 4",  tier: 2}  # only 6 in 10698
   # --- Slopes (roofs) ---
-  - {id: slope45_2x1, part: "3040", name: "Slope 45 2 x 1", tier: 1}
+  - {id: slope45_2x1, part: "3040", name: "Slope 45 2 x 1", tier: 2}  # none in Raj's box
   - {id: slope45_2x2, part: "3039", name: "Slope 45 2 x 2", tier: 1}
   # --- House parts ---
   - {id: window_1x2x2, part: "60592", name: "Window 1 x 2 x 2 Flat Front", tier: 2}  # only 5 in 10698
