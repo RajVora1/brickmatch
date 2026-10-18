@@ -1,7 +1,7 @@
 """Full pipeline: photo -> stage 1 boxes -> stage 2 piece types + colors -> counts -> ranked builds.
 
     python -m brickmatch.pipeline photo.jpg --detector runs/detector/weights/best.pt \
-        --classifier runs/classifier_resnet18_1.0.pt
+        --classifier runs/classifier_resnet18_1.0_pad_bal.pt
 """
 import argparse
 import json
@@ -10,7 +10,7 @@ from pathlib import Path
 
 import torch
 import yaml
-from PIL import Image
+from PIL import Image, ImageOps
 from torchvision import models
 
 from brickmatch.match import rank_builds
@@ -35,18 +35,28 @@ def load_classifier(path):
     model = build(weights=None)
     set_head(model, len(ckpt["classes"]))
     model.load_state_dict(ckpt["model"])
-    return model.eval(), ckpt["classes"], make_transforms(False)
+    # Older checkpoints don't record --pad; their filename does.
+    pad = ckpt.get("pad", "_pad" in Path(path).name)
+    return model.eval(), ckpt["classes"], make_transforms(False, pad)
 
 
-def count_pieces(image_path, detector_path, classifier_path, conf=0.25):
+def load_models(detector_path, classifier_path):
     from ultralytics import YOLO  # noqa: PLC0415
-    img = Image.open(image_path).convert("RGB")
-    boxes = YOLO(detector_path).predict(img, conf=conf, max_det=500, verbose=False)[0].boxes.xyxy.tolist()
-    model, classes, tf = load_classifier(classifier_path)
+    return YOLO(detector_path), *load_classifier(classifier_path)
+
+
+def count_pieces(image_path, detector_path, classifier_path, conf=0.5, models=None):
+    """Pass models=load_models(...) to reuse them across many photos."""
+    detector, model, classes, tf = models or load_models(detector_path, classifier_path)
+    img = ImageOps.exif_transpose(Image.open(image_path)).convert("RGB")
+    W, H = img.size
+    boxes = detector.predict(img, imgsz=1024, conf=conf, max_det=500, verbose=False)[0].boxes.xyxy.tolist()
     by_type, by_type_color = Counter(), Counter()
     with torch.no_grad():
         for x1, y1, x2, y2 in boxes:
-            crop = img.crop((x1, y1, x2, y2))
+            # Same 10% margin as the training crops (docs/real-crops.md Step 2).
+            pad = 0.1 * max(x2 - x1, y2 - y1)
+            crop = img.crop((max(0, x1 - pad), max(0, y1 - pad), min(W, x2 + pad), min(H, y2 + pad)))
             piece = classes[model(tf(crop).unsqueeze(0)).argmax(1).item()]
             by_type[piece] += 1
             by_type_color[f"{piece}/{nearest_color(crop)}"] += 1
