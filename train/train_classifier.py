@@ -122,7 +122,8 @@ def main():
         print(f"epoch {epoch + 1}/{args.epochs}  val acc {val_acc:.3f}")
         if val_acc > best:
             best = val_acc
-            torch.save({"arch": args.arch, "model": model.state_dict(), "classes": val_ds.classes}, out)
+            torch.save({"arch": args.arch, "model": model.state_dict(), "classes": val_ds.classes,
+                        "pad": args.pad}, out)
 
     model.load_state_dict(torch.load(out)["model"])
     test_acc, confusion = evaluate(model, loader(test_ds, False), device, len(test_ds.classes))
