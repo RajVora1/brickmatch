@@ -68,9 +68,11 @@ Tips: avoid harsh shadows (daylight near a window is best), keep the whole pile 
 4. For each photo: press `1` (selects the `piece` label), drag a tight box around a piece, repeat for every piece you can see, including off-list ones and half-hidden ones. Click **Submit**.
 5. When you've done 5-10 photos: **Export** -> **YOLO**. You get a zip with `images/`, `labels/`, and `classes.txt` (which should say only `piece`).
 6. Put them in the repo split **by pile** (all photos of one pile go in the same split):
-   - piles 1-7 -> `data/detect/images/train/` and `data/detect/labels/train/`
-   - piles 8-9 -> `.../val/`
+   - piles 1-6 and 8 -> `data/detect/images/train/` and `data/detect/labels/train/`
+   - piles 7 and 9 -> `.../val/`
    - pile 10 -> `.../test/`
+
+   The Colab cell in `docs/box-labeling.md` does this sorting for you.
 
    Each `.jpg` must have a `.txt` with the same name in the matching `labels/` folder.
 

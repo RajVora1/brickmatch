@@ -13,6 +13,7 @@ Expected layout (YOLO format, see docs/labeling-guide.md):
 import argparse
 from pathlib import Path
 
+import yaml
 from ultralytics import YOLO
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -25,8 +26,16 @@ def main():
     ap.add_argument("--imgsz", type=int, default=1024, help="piles have many small pieces, so go above the 640 default")
     args = ap.parse_args()
 
+    # Ultralytics resolves a relative dataset `path` against the current folder, not the yaml's,
+    # so pin it to an absolute path; otherwise it looks for images outside the repo.
+    cfg = yaml.safe_load((ROOT / "configs/detect.yaml").read_text())
+    cfg["path"] = str((ROOT / "configs" / cfg["path"]).resolve())
+    data_yaml = ROOT / "runs" / "detect_abs.yaml"
+    data_yaml.parent.mkdir(exist_ok=True)
+    data_yaml.write_text(yaml.safe_dump(cfg))
+
     model = YOLO(args.model)
-    model.train(data=str(ROOT / "configs/detect.yaml"), epochs=args.epochs, imgsz=args.imgsz,
+    model.train(data=str(data_yaml), epochs=args.epochs, imgsz=args.imgsz,
                 single_cls=True, max_det=500, project=str(ROOT / "runs"), name="detector")
     # Recall matters most: a missed piece can never be counted.
     metrics = model.val(split="test", single_cls=True, imgsz=args.imgsz, max_det=500)
