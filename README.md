@@ -27,6 +27,7 @@ Two-stage design (mentor's advice): finding pieces and naming them are separate 
 | `brickmatch/pipeline.py` | Photo in, counts and ranked builds out |
 | `brickmatch/match.py` | Ranks builds by coverage and lists missing pieces |
 | `eval/evaluate.py` | Counting error + "are recommended builds really buildable?" |
+| `brickmatch/demo.py` | Web demo: photo in, boxed pieces + counts + builds out (see `docs/demo.md`) |
 | `docs/` | Labeling guide, dataset notes |
 
 ## Starting piece list (recommendation, adjust freely)
