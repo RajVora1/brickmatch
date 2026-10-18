@@ -45,23 +45,31 @@ def load_models(detector_path, classifier_path):
     return YOLO(detector_path), *load_classifier(classifier_path)
 
 
-def count_pieces(image_path, detector_path, classifier_path, conf=0.5, models=None):
-    """Pass models=load_models(...) to reuse them across many photos."""
-    detector, model, classes, tf = models or load_models(detector_path, classifier_path)
-    img = ImageOps.exif_transpose(Image.open(image_path)).convert("RGB")
+def detect_pieces(img, models, conf=0.5):
+    """One dict per piece found in a PIL image: box, piece type, classifier confidence, color."""
+    detector, model, classes, tf = models
     W, H = img.size
     boxes = detector.predict(img, imgsz=1024, conf=conf, max_det=500, verbose=False)[0].boxes.xyxy.tolist()
-    by_type, by_type_color = Counter(), Counter()
+    found = []
     with torch.no_grad():
         for x1, y1, x2, y2 in boxes:
             # Same 10% margin as the training crops (docs/real-crops.md Step 2).
             pad = 0.1 * max(x2 - x1, y2 - y1)
             crop = img.crop((max(0, x1 - pad), max(0, y1 - pad), min(W, x2 + pad), min(H, y2 + pad)))
-            piece = classes[model(tf(crop).unsqueeze(0)).argmax(1).item()]
-            by_type[piece] += 1
-            by_type_color[f"{piece}/{nearest_color(crop)}"] += 1
-    return dict(by_type), dict(by_type_color)
+            probs = model(tf(crop).unsqueeze(0)).softmax(1)[0]
+            found.append({"box": [x1, y1, x2, y2], "piece": classes[probs.argmax().item()],
+                          "score": probs.max().item(), "color": nearest_color(crop)})
+    return found
 
+
+def count_pieces(image_path, detector_path, classifier_path, conf=0.5, models=None):
+    """Pass models=load_models(...) to reuse them across many photos."""
+    models = models or load_models(detector_path, classifier_path)
+    img = ImageOps.exif_transpose(Image.open(image_path)).convert("RGB")
+    found = detect_pieces(img, models, conf)
+    by_type = Counter(f["piece"] for f in found)
+    by_type_color = Counter(f"{f['piece']}/{f['color']}" for f in found)
+    return dict(by_type), dict(by_type_color)
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
