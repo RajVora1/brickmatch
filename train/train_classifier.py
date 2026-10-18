@@ -8,6 +8,7 @@ test/ should be crops from your own held-out piles only, so the score reflects r
     python train/train_classifier.py --arch resnet18
     python train/train_classifier.py --arch vit_b_16
     python train/train_classifier.py --arch resnet18 --train-fraction 0.25   # data-size comparison
+    python train/train_classifier.py --arch resnet18 --pad --balance         # keep whole pieces, even out types
 """
 import argparse
 import json
@@ -16,6 +17,7 @@ from pathlib import Path
 import torch
 from torch import nn
 from torchvision import datasets, models, transforms
+from torchvision.transforms import functional as TF
 
 ROOT = Path(__file__).resolve().parent.parent
 CROPS = ROOT / "data/crops"
@@ -29,8 +31,25 @@ ARCHS = {
 }
 
 
-def make_transforms(train):
+class PadToSquare:
+    """Pad the short side so a long piece (1x4, 2x4) is never cut down to its middle studs."""
+
+    def __call__(self, img):
+        w, h = img.size
+        s = max(w, h)
+        left, top = (s - w) // 2, (s - h) // 2
+        return TF.pad(img, [left, top, s - w - left, s - h - top], fill=(124, 116, 104))
+
+
+def make_transforms(train, pad=False):
     norm = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+    if pad:
+        # Whole piece always in view: no random crop in training, no center crop at test time.
+        steps = [PadToSquare(), transforms.Resize((224, 224))]
+        if train:
+            steps += [transforms.RandomRotation(180), transforms.RandomHorizontalFlip(),
+                      transforms.ColorJitter(0.3, 0.3, 0.2)]
+        return transforms.Compose(steps + [transforms.ToTensor(), norm])
     if train:
         # Pieces can appear at any rotation; colors vary with lighting.
         return transforms.Compose([transforms.RandomResizedCrop(224, scale=(0.7, 1.0)),
@@ -56,12 +75,14 @@ def main():
     ap.add_argument("--epochs", type=int, default=15)
     ap.add_argument("--lr", type=float, default=3e-4)
     ap.add_argument("--train-fraction", type=float, default=1.0, help="use part of the training set")
+    ap.add_argument("--pad", action="store_true", help="pad crops to square instead of cropping them")
+    ap.add_argument("--balance", action="store_true", help="sample every piece type equally often")
     args = ap.parse_args()
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    train_ds = datasets.ImageFolder(CROPS / "train", make_transforms(True))
-    val_ds = datasets.ImageFolder(CROPS / "val", make_transforms(False))
-    test_ds = datasets.ImageFolder(CROPS / "test", make_transforms(False))
+    train_ds = datasets.ImageFolder(CROPS / "train", make_transforms(True, args.pad))
+    val_ds = datasets.ImageFolder(CROPS / "val", make_transforms(False, args.pad))
+    test_ds = datasets.ImageFolder(CROPS / "test", make_transforms(False, args.pad))
     assert train_ds.classes == val_ds.classes == test_ds.classes, "every split needs the same piece folders"
     if args.train_fraction < 1.0:
         g = torch.Generator().manual_seed(0)
@@ -69,6 +90,14 @@ def main():
         train_ds = torch.utils.data.Subset(train_ds, keep.tolist())
 
     loader = lambda ds, shuffle: torch.utils.data.DataLoader(ds, batch_size=32, shuffle=shuffle, num_workers=2)
+    train_loader = lambda: loader(train_ds, True)
+    if args.balance:
+        # Rare types get drawn more often, so brick_1x1 (twice the photos) stops being the safe guess.
+        targets = torch.tensor([y for _, y in train_ds.samples] if hasattr(train_ds, "samples")
+                               else [train_ds.dataset.targets[i] for i in train_ds.indices])
+        weights_per_sample = (1.0 / torch.bincount(targets).float())[targets]
+        sampler = torch.utils.data.WeightedRandomSampler(weights_per_sample, len(targets))
+        train_loader = lambda: torch.utils.data.DataLoader(train_ds, batch_size=32, sampler=sampler, num_workers=2)
     build, weights, set_head = ARCHS[args.arch]
     model = build(weights=weights)
     set_head(model, len(val_ds.classes))
@@ -77,12 +106,13 @@ def main():
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, args.epochs)
     loss_fn = nn.CrossEntropyLoss(label_smoothing=0.1)
 
-    out = ROOT / f"runs/classifier_{args.arch}_{args.train_fraction}.pt"
+    tag = "_pad" * args.pad + "_bal" * args.balance
+    out = ROOT / f"runs/classifier_{args.arch}_{args.train_fraction}{tag}.pt"
     out.parent.mkdir(parents=True, exist_ok=True)
     best = 0.0
     for epoch in range(args.epochs):
         model.train()
-        for x, y in loader(train_ds, True):
+        for x, y in train_loader():
             loss = loss_fn(model(x.to(device)), y.to(device))
             opt.zero_grad()
             loss.backward()
