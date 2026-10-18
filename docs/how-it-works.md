@@ -84,7 +84,7 @@ It's like studying with practice problems (train), taking practice quizzes to se
 - **`detect.yaml`**: tells YOLO where the box-labeled photos live and that there's just one class, `piece`.
 
 ### The builds database (`builds/builds.json`)
-A list of builds, each with a name, a category (tower, wall, bridge, house) and a parts list like "8x brick_2x2, 1x plate_2x2, 2x slope45_2x1". You'll grow this to ~20.
+A list of builds, each with a name, a category (tower, wall, bridge, house) and a parts list like "8x brick_2x2, 2x slope45_2x1". It has 24 hand-made builds that use only the 8 tier-1 pieces, so everything it suggests can come out of the 10698 box. Online build collections (Rebrickable MOCs, LEGO idea books) use dozens of piece types, so almost none would ever match a tier-1 pile.
 
 ### Training scripts (`train/`)
 - **`train_classifier.py`**: trains the *Name* model. What it does, in order:

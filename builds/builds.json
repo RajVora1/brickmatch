@@ -1,49 +1,275 @@
 {
-  "_comment": "Each build lists piece ids from configs/pieces.yaml with counts. 'color' is optional; omit it when any color works.",
+  "_comment": "Hand-made builds that use only the 8 tier-1 piece ids in configs/pieces.yaml (all in LEGO Classic 10698). 'color' is optional on a part; omit it when any color works. Parts lists are piece counts, not step-by-step instructions.",
   "builds": [
     {
       "id": "tower_simple",
       "name": "Simple tower",
       "category": "tower",
+      "description": "Stack of 2x2 bricks with two small slopes as a pointed cap.",
       "parts": [
         {"piece": "brick_2x2", "count": 8},
-        {"piece": "plate_2x2", "count": 1},
         {"piece": "slope45_2x1", "count": 2}
       ]
     },
     {
-      "id": "wall_low",
-      "name": "Low wall with window",
-      "category": "wall",
+      "id": "tower_tall",
+      "name": "Tall tower",
+      "category": "tower",
+      "description": "Twelve 2x2 bricks high, topped with one 2x2 slope.",
       "parts": [
-        {"piece": "brick_2x4", "count": 4},
+        {"piece": "brick_2x2", "count": 12},
+        {"piece": "slope45_2x2", "count": 1}
+      ]
+    },
+    {
+      "id": "tower_crisscross",
+      "name": "Criss-cross tower",
+      "category": "tower",
+      "description": "2x4 bricks stacked, each layer turned 90 degrees.",
+      "parts": [
+        {"piece": "brick_2x4", "count": 10}
+      ]
+    },
+    {
+      "id": "tower_lighthouse",
+      "name": "Lighthouse",
+      "category": "tower",
+      "description": "Wide 2x4 base, a 2x2 column, a ring of 1x1 'lamp' bricks and a slope roof.",
+      "parts": [
+        {"piece": "brick_2x4", "count": 2},
+        {"piece": "brick_2x2", "count": 8},
+        {"piece": "brick_1x1", "count": 4},
+        {"piece": "slope45_2x2", "count": 1}
+      ]
+    },
+    {
+      "id": "tower_hollow",
+      "name": "Hollow square tower",
+      "category": "tower",
+      "description": "4x4 hollow tower, 6 layers (two 1x4 + two 1x2 per layer, turned each layer), 2x2 slope roof.",
+      "parts": [
+        {"piece": "brick_1x4", "count": 12},
+        {"piece": "brick_1x2", "count": 12},
+        {"piece": "slope45_2x2", "count": 4}
+      ]
+    },
+    {
+      "id": "tower_castle",
+      "name": "Castle turret",
+      "category": "tower",
+      "description": "Hollow 4x4 tower with 1x1 battlements on the corners.",
+      "parts": [
+        {"piece": "brick_1x4", "count": 12},
+        {"piece": "brick_1x2", "count": 12},
+        {"piece": "brick_1x1", "count": 4}
+      ]
+    },
+    {
+      "id": "wall_low",
+      "name": "Low wall",
+      "category": "wall",
+      "description": "8 studs long, 4 rows, offset like real bricks (1x2 half-bricks at the ends).",
+      "parts": [
+        {"piece": "brick_1x4", "count": 6},
+        {"piece": "brick_1x2", "count": 4}
+      ]
+    },
+    {
+      "id": "wall_long",
+      "name": "Long wall",
+      "category": "wall",
+      "description": "12 studs long, 4 rows, offset pattern.",
+      "parts": [
+        {"piece": "brick_1x4", "count": 10},
+        {"piece": "brick_1x2", "count": 4}
+      ]
+    },
+    {
+      "id": "wall_thick",
+      "name": "Thick wall",
+      "category": "wall",
+      "description": "Two studs thick, 8 long, 4 rows of 2x4 bricks offset with 2x2 bricks.",
+      "parts": [
+        {"piece": "brick_2x4", "count": 6},
+        {"piece": "brick_2x2", "count": 4}
+      ]
+    },
+    {
+      "id": "wall_castle",
+      "name": "Castle wall",
+      "category": "wall",
+      "description": "Low wall with 1x1 battlements along the top.",
+      "parts": [
+        {"piece": "brick_1x4", "count": 6},
         {"piece": "brick_1x2", "count": 4},
-        {"piece": "window_1x2x2", "count": 1},
-        {"piece": "plate_2x4", "count": 1}
+        {"piece": "brick_1x1", "count": 4}
+      ]
+    },
+    {
+      "id": "wall_window",
+      "name": "Wall with window",
+      "category": "wall",
+      "description": "8 studs long, 5 rows, with a 2-stud window gap and a 1x2 plate sill.",
+      "parts": [
+        {"piece": "brick_1x4", "count": 7},
+        {"piece": "brick_1x2", "count": 6},
+        {"piece": "brick_1x1", "count": 2},
+        {"piece": "plate_1x2", "count": 1}
+      ]
+    },
+    {
+      "id": "wall_fence",
+      "name": "Garden fence",
+      "category": "wall",
+      "description": "1x1 posts joined by 1x4 rails, plates as caps.",
+      "parts": [
+        {"piece": "brick_1x1", "count": 8},
+        {"piece": "brick_1x4", "count": 3},
+        {"piece": "plate_1x2", "count": 2}
       ]
     },
     {
       "id": "bridge_flat",
       "name": "Flat bridge",
       "category": "bridge",
+      "description": "Two 2x2 pillars three bricks high, a deck of overlapping 1x4 bricks, plate edges.",
       "parts": [
         {"piece": "brick_2x2", "count": 6},
-        {"piece": "plate_2x4", "count": 4},
+        {"piece": "brick_1x4", "count": 4},
         {"piece": "plate_1x2", "count": 4}
+      ]
+    },
+    {
+      "id": "bridge_ramp",
+      "name": "Ramp bridge",
+      "category": "bridge",
+      "description": "Short pillars, a 2x4 deck and 2x2 slopes as ramps at both ends.",
+      "parts": [
+        {"piece": "brick_2x2", "count": 4},
+        {"piece": "brick_2x4", "count": 2},
+        {"piece": "brick_1x4", "count": 2},
+        {"piece": "slope45_2x2", "count": 4}
+      ]
+    },
+    {
+      "id": "bridge_footbridge",
+      "name": "Footbridge with railings",
+      "category": "bridge",
+      "description": "2x2 pillars, 2x4 deck and 1x1 railing posts.",
+      "parts": [
+        {"piece": "brick_2x2", "count": 4},
+        {"piece": "brick_2x4", "count": 3},
+        {"piece": "brick_1x1", "count": 4},
+        {"piece": "plate_1x2", "count": 2}
+      ]
+    },
+    {
+      "id": "bridge_long",
+      "name": "Long bridge",
+      "category": "bridge",
+      "description": "Three pillars, a staggered 2x4 deck and slope ramps.",
+      "parts": [
+        {"piece": "brick_2x2", "count": 9},
+        {"piece": "brick_2x4", "count": 6},
+        {"piece": "slope45_2x2", "count": 4}
+      ]
+    },
+    {
+      "id": "bridge_steps",
+      "name": "Step bridge",
+      "category": "bridge",
+      "description": "Stairs up and down made of 2x4 bricks, with a 2x2 landing on top.",
+      "parts": [
+        {"piece": "brick_2x4", "count": 6},
+        {"piece": "brick_2x2", "count": 4}
+      ]
+    },
+    {
+      "id": "house_doghouse",
+      "name": "Doghouse",
+      "category": "house",
+      "description": "2x4 floor, short walls with a doorway, two 2x2 slopes as the roof.",
+      "parts": [
+        {"piece": "brick_2x4", "count": 2},
+        {"piece": "brick_1x2", "count": 4},
+        {"piece": "brick_1x1", "count": 4},
+        {"piece": "slope45_2x2", "count": 2}
+      ]
+    },
+    {
+      "id": "house_hut",
+      "name": "Hut",
+      "category": "house",
+      "description": "4x4 hut, 3 rows high with a door gap, 2x2 slope roof.",
+      "parts": [
+        {"piece": "brick_1x4", "count": 4},
+        {"piece": "brick_1x2", "count": 6},
+        {"piece": "brick_1x1", "count": 2},
+        {"piece": "slope45_2x2", "count": 4}
       ]
     },
     {
       "id": "house_tiny",
       "name": "Tiny house",
       "category": "house",
+      "description": "6x4 house, 4 rows with door gap, two rows of 2x2 slopes as the roof.",
       "parts": [
-        {"piece": "brick_2x4", "count": 6},
-        {"piece": "brick_1x2", "count": 6},
-        {"piece": "brick_1x4", "count": 2},
-        {"piece": "door_frame_1x4x6", "count": 1},
-        {"piece": "window_1x2x2", "count": 2},
+        {"piece": "brick_1x4", "count": 8},
+        {"piece": "brick_1x2", "count": 10},
+        {"piece": "brick_1x1", "count": 4},
+        {"piece": "slope45_2x2", "count": 6}
+      ]
+    },
+    {
+      "id": "house_chimney",
+      "name": "House with chimney",
+      "category": "house",
+      "description": "Tiny house plus a 1x1 chimney and small slopes on the gable ends.",
+      "parts": [
+        {"piece": "brick_1x4", "count": 8},
+        {"piece": "brick_1x2", "count": 10},
+        {"piece": "brick_1x1", "count": 7},
         {"piece": "slope45_2x2", "count": 6},
-        {"piece": "plate_2x4", "count": 2}
+        {"piece": "slope45_2x1", "count": 2}
+      ]
+    },
+    {
+      "id": "house_garage",
+      "name": "Garage",
+      "category": "house",
+      "description": "6x4 walls with a wide opening and a flat roof of 2x4 bricks.",
+      "parts": [
+        {"piece": "brick_1x4", "count": 8},
+        {"piece": "brick_1x2", "count": 6},
+        {"piece": "brick_2x4", "count": 4}
+      ]
+    },
+    {
+      "id": "house_cottage",
+      "name": "Cottage",
+      "category": "house",
+      "description": "8x6 house with door, 1x2 plate doorstep and a full slope roof.",
+      "parts": [
+        {"piece": "brick_1x4", "count": 12},
+        {"piece": "brick_1x2", "count": 12},
+        {"piece": "brick_1x1", "count": 4},
+        {"piece": "slope45_2x2", "count": 8},
+        {"piece": "slope45_2x1", "count": 2},
+        {"piece": "plate_1x2", "count": 2}
+      ]
+    },
+    {
+      "id": "house_two_story",
+      "name": "Two-story house",
+      "category": "house",
+      "description": "Two floors of 6x4 walls with a 2x4 brick floor between them, slope roof.",
+      "parts": [
+        {"piece": "brick_1x4", "count": 16},
+        {"piece": "brick_1x2", "count": 16},
+        {"piece": "brick_1x1", "count": 4},
+        {"piece": "brick_2x4", "count": 4},
+        {"piece": "slope45_2x2", "count": 6},
+        {"piece": "plate_1x2", "count": 2}
       ]
     }
   ]
