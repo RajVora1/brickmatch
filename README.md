@@ -46,7 +46,7 @@ Tier 2, add once tier 1 works:
 ## Plan
 
 1. **Setup and warm-up**: PyTorch on Colab/Kaggle; train a classifier on Kaggle "Images of LEGO Bricks".
-2. **Builds and matcher**: grow `builds.json` to ~20 builds. `python -m brickmatch.match '{"brick_2x2": 8}'` already works.
+2. **Builds and matcher**: `builds.json` has 24 hand-made builds (6 towers, 6 walls, 5 bridges, 7 houses) using only tier-1 pieces; `python tests/test_builds.py` checks them. Try `python -m brickmatch.match '{"brick_2x2": 8}'`.
 3. **Collect and label**: mixed piles (boxes only) and single-type piles (free type labels). See `docs/labeling-guide.md`.
 4. **Stage 1**: `python train/train_detector.py`. Watch recall.
 5. **Stage 2**: `python train/train_classifier.py --arch resnet18`, then `--arch vit_b_16`; repeat with `--train-fraction 0.25 / 0.5` to see how each scales with data.
