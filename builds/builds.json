@@ -1,5 +1,5 @@
 {
-  "_comment": "Hand-made builds that use only the 8 tier-1 piece ids in configs/pieces.yaml (all in LEGO Classic 10698). 'color' is optional on a part; omit it when any color works. Parts lists are piece counts, not step-by-step instructions.",
+  "_comment": "Hand-made builds that use only the 8 tier-1 piece ids in configs/pieces.yaml (all in LEGO Classic 10698). 'color' is optional on a part; omit it when any color works. Parts lists are piece counts. A build may also have a 'layout' (where every piece goes, used for step-by-step instructions); see brickmatch/instructions.py for the format.",
   "builds": [
     {
       "id": "tower_simple",
@@ -9,6 +9,18 @@
       "parts": [
         {"piece": "brick_2x2", "count": 8},
         {"piece": "slope45_2x1", "count": 2}
+      ],
+      "layout": [
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 12, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 15, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 18, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 21, "rot": 0},
+        {"piece": "slope45_2x1", "x": 0, "y": 0, "z": 24, "rot": 0},
+        {"piece": "slope45_2x1", "x": 1, "y": 0, "z": 24, "rot": 180}
       ]
     },
     {
@@ -19,6 +31,21 @@
       "parts": [
         {"piece": "brick_2x2", "count": 12},
         {"piece": "slope45_2x2", "count": 1}
+      ],
+      "layout": [
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 12, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 15, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 18, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 21, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 24, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 27, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 30, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 33, "rot": 0},
+        {"piece": "slope45_2x2", "x": 0, "y": 0, "z": 36, "rot": 0}
       ]
     },
     {
@@ -28,6 +55,18 @@
       "description": "2x4 bricks stacked, each layer turned 90 degrees.",
       "parts": [
         {"piece": "brick_2x4", "count": 10}
+      ],
+      "layout": [
+        {"piece": "brick_2x4", "x": 0, "y": 1, "z": 0, "rot": 0},
+        {"piece": "brick_2x4", "x": 1, "y": 0, "z": 3, "rot": 90},
+        {"piece": "brick_2x4", "x": 0, "y": 1, "z": 6, "rot": 0},
+        {"piece": "brick_2x4", "x": 1, "y": 0, "z": 9, "rot": 90},
+        {"piece": "brick_2x4", "x": 0, "y": 1, "z": 12, "rot": 0},
+        {"piece": "brick_2x4", "x": 1, "y": 0, "z": 15, "rot": 90},
+        {"piece": "brick_2x4", "x": 0, "y": 1, "z": 18, "rot": 0},
+        {"piece": "brick_2x4", "x": 1, "y": 0, "z": 21, "rot": 90},
+        {"piece": "brick_2x4", "x": 0, "y": 1, "z": 24, "rot": 0},
+        {"piece": "brick_2x4", "x": 1, "y": 0, "z": 27, "rot": 90}
       ]
     },
     {
@@ -40,6 +79,23 @@
         {"piece": "brick_2x2", "count": 8},
         {"piece": "brick_1x1", "count": 4},
         {"piece": "slope45_2x2", "count": 1}
+      ],
+      "layout": [
+        {"piece": "brick_2x4", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x4", "x": 0, "y": 2, "z": 0, "rot": 0},
+        {"piece": "brick_2x2", "x": 1, "y": 1, "z": 3, "rot": 0},
+        {"piece": "brick_2x2", "x": 1, "y": 1, "z": 6, "rot": 0},
+        {"piece": "brick_2x2", "x": 1, "y": 1, "z": 9, "rot": 0},
+        {"piece": "brick_2x2", "x": 1, "y": 1, "z": 12, "rot": 0},
+        {"piece": "brick_2x2", "x": 1, "y": 1, "z": 15, "rot": 0},
+        {"piece": "brick_2x2", "x": 1, "y": 1, "z": 18, "rot": 0},
+        {"piece": "brick_2x2", "x": 1, "y": 1, "z": 21, "rot": 0},
+        {"piece": "brick_2x2", "x": 1, "y": 1, "z": 24, "rot": 0},
+        {"piece": "brick_1x1", "x": 1, "y": 1, "z": 27, "rot": 0},
+        {"piece": "brick_1x1", "x": 2, "y": 1, "z": 27, "rot": 0},
+        {"piece": "brick_1x1", "x": 1, "y": 2, "z": 27, "rot": 0},
+        {"piece": "brick_1x1", "x": 2, "y": 2, "z": 27, "rot": 0},
+        {"piece": "slope45_2x2", "x": 1, "y": 1, "z": 30, "rot": 0}
       ]
     },
     {
@@ -51,6 +107,36 @@
         {"piece": "brick_1x4", "count": 12},
         {"piece": "brick_1x2", "count": 12},
         {"piece": "slope45_2x2", "count": 4}
+      ],
+      "layout": [
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 1, "z": 0, "rot": 90},
+        {"piece": "brick_1x2", "x": 3, "y": 1, "z": 0, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 3, "rot": 90},
+        {"piece": "brick_1x4", "x": 3, "y": 0, "z": 3, "rot": 90},
+        {"piece": "brick_1x2", "x": 1, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x2", "x": 1, "y": 3, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 1, "z": 6, "rot": 90},
+        {"piece": "brick_1x2", "x": 3, "y": 1, "z": 6, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 9, "rot": 90},
+        {"piece": "brick_1x4", "x": 3, "y": 0, "z": 9, "rot": 90},
+        {"piece": "brick_1x2", "x": 1, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x2", "x": 1, "y": 3, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 12, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 12, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 1, "z": 12, "rot": 90},
+        {"piece": "brick_1x2", "x": 3, "y": 1, "z": 12, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 15, "rot": 90},
+        {"piece": "brick_1x4", "x": 3, "y": 0, "z": 15, "rot": 90},
+        {"piece": "brick_1x2", "x": 1, "y": 0, "z": 15, "rot": 0},
+        {"piece": "brick_1x2", "x": 1, "y": 3, "z": 15, "rot": 0},
+        {"piece": "slope45_2x2", "x": 0, "y": 0, "z": 18, "rot": 0},
+        {"piece": "slope45_2x2", "x": 2, "y": 0, "z": 18, "rot": 0},
+        {"piece": "slope45_2x2", "x": 0, "y": 2, "z": 18, "rot": 180},
+        {"piece": "slope45_2x2", "x": 2, "y": 2, "z": 18, "rot": 180}
       ]
     },
     {
@@ -62,6 +148,36 @@
         {"piece": "brick_1x4", "count": 12},
         {"piece": "brick_1x2", "count": 12},
         {"piece": "brick_1x1", "count": 4}
+      ],
+      "layout": [
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 1, "z": 0, "rot": 90},
+        {"piece": "brick_1x2", "x": 3, "y": 1, "z": 0, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 3, "rot": 90},
+        {"piece": "brick_1x4", "x": 3, "y": 0, "z": 3, "rot": 90},
+        {"piece": "brick_1x2", "x": 1, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x2", "x": 1, "y": 3, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 1, "z": 6, "rot": 90},
+        {"piece": "brick_1x2", "x": 3, "y": 1, "z": 6, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 9, "rot": 90},
+        {"piece": "brick_1x4", "x": 3, "y": 0, "z": 9, "rot": 90},
+        {"piece": "brick_1x2", "x": 1, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x2", "x": 1, "y": 3, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 12, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 12, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 1, "z": 12, "rot": 90},
+        {"piece": "brick_1x2", "x": 3, "y": 1, "z": 12, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 15, "rot": 90},
+        {"piece": "brick_1x4", "x": 3, "y": 0, "z": 15, "rot": 90},
+        {"piece": "brick_1x2", "x": 1, "y": 0, "z": 15, "rot": 0},
+        {"piece": "brick_1x2", "x": 1, "y": 3, "z": 15, "rot": 0},
+        {"piece": "brick_1x1", "x": 0, "y": 0, "z": 18, "rot": 0},
+        {"piece": "brick_1x1", "x": 3, "y": 0, "z": 18, "rot": 0},
+        {"piece": "brick_1x1", "x": 0, "y": 3, "z": 18, "rot": 0},
+        {"piece": "brick_1x1", "x": 3, "y": 3, "z": 18, "rot": 0}
       ]
     },
     {
@@ -72,6 +188,18 @@
       "parts": [
         {"piece": "brick_1x4", "count": 6},
         {"piece": "brick_1x2", "count": 4}
+      ],
+      "layout": [
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 2, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x2", "x": 6, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 2, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x2", "x": 6, "y": 0, "z": 9, "rot": 0}
       ]
     },
     {
@@ -82,6 +210,22 @@
       "parts": [
         {"piece": "brick_1x4", "count": 10},
         {"piece": "brick_1x2", "count": 4}
+      ],
+      "layout": [
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x4", "x": 8, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 2, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 6, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x2", "x": 10, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x4", "x": 8, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 2, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 6, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x2", "x": 10, "y": 0, "z": 9, "rot": 0}
       ]
     },
     {
@@ -92,6 +236,18 @@
       "parts": [
         {"piece": "brick_2x4", "count": 6},
         {"piece": "brick_2x2", "count": 4}
+      ],
+      "layout": [
+        {"piece": "brick_2x4", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x4", "x": 4, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x4", "x": 2, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x2", "x": 6, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x4", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_2x4", "x": 4, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_2x4", "x": 2, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_2x2", "x": 6, "y": 0, "z": 9, "rot": 0}
       ]
     },
     {
@@ -103,18 +259,52 @@
         {"piece": "brick_1x4", "count": 6},
         {"piece": "brick_1x2", "count": 4},
         {"piece": "brick_1x1", "count": 4}
+      ],
+      "layout": [
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 2, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x2", "x": 6, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 2, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x2", "x": 6, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 0, "y": 0, "z": 12, "rot": 0},
+        {"piece": "brick_1x1", "x": 2, "y": 0, "z": 12, "rot": 0},
+        {"piece": "brick_1x1", "x": 5, "y": 0, "z": 12, "rot": 0},
+        {"piece": "brick_1x1", "x": 7, "y": 0, "z": 12, "rot": 0}
       ]
     },
     {
       "id": "wall_window",
       "name": "Wall with window",
       "category": "wall",
-      "description": "8 studs long, 5 rows, with a 2-stud window gap and a 1x2 plate sill.",
+      "description": "8 studs long, 6 rows, with a 2 x 3 window opening and a 1x2 plate sill.",
       "parts": [
         {"piece": "brick_1x4", "count": 7},
         {"piece": "brick_1x2", "count": 6},
         {"piece": "brick_1x1", "count": 2},
         {"piece": "plate_1x2", "count": 1}
+      ],
+      "layout": [
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 2, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x2", "x": 6, "y": 0, "z": 3, "rot": 0},
+        {"piece": "plate_1x2", "x": 2, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 0, "z": 12, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 12, "rot": 0},
+        {"piece": "brick_1x1", "x": 0, "y": 0, "z": 15, "rot": 0},
+        {"piece": "brick_1x4", "x": 1, "y": 0, "z": 15, "rot": 0},
+        {"piece": "brick_1x2", "x": 5, "y": 0, "z": 15, "rot": 0},
+        {"piece": "brick_1x1", "x": 7, "y": 0, "z": 15, "rot": 0}
       ]
     },
     {
@@ -126,6 +316,21 @@
         {"piece": "brick_1x1", "count": 8},
         {"piece": "brick_1x4", "count": 3},
         {"piece": "plate_1x2", "count": 2}
+      ],
+      "layout": [
+        {"piece": "brick_1x1", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x1", "x": 3, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x1", "x": 6, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x1", "x": 9, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 6, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x1", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x4", "x": 3, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x1", "x": 9, "y": 0, "z": 6, "rot": 0},
+        {"piece": "plate_1x2", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 3, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 6, "y": 0, "z": 9, "rot": 0},
+        {"piece": "plate_1x2", "x": 8, "y": 0, "z": 9, "rot": 0}
       ]
     },
     {
@@ -137,6 +342,22 @@
         {"piece": "brick_2x2", "count": 6},
         {"piece": "brick_1x4", "count": 4},
         {"piece": "plate_1x2", "count": 4}
+      ],
+      "layout": [
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_2x2", "x": 6, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x2", "x": 6, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x2", "x": 6, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 1, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 1, "z": 9, "rot": 0},
+        {"piece": "plate_1x2", "x": 0, "y": 0, "z": 12, "rot": 90},
+        {"piece": "plate_1x2", "x": 3, "y": 0, "z": 12, "rot": 0},
+        {"piece": "plate_1x2", "x": 3, "y": 1, "z": 12, "rot": 0},
+        {"piece": "plate_1x2", "x": 7, "y": 0, "z": 12, "rot": 90}
       ]
     },
     {
@@ -149,6 +370,20 @@
         {"piece": "brick_2x4", "count": 2},
         {"piece": "brick_1x4", "count": 2},
         {"piece": "slope45_2x2", "count": 4}
+      ],
+      "layout": [
+        {"piece": "brick_2x2", "x": 2, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x2", "x": 2, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x2", "x": 8, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x2", "x": 8, "y": 0, "z": 3, "rot": 0},
+        {"piece": "slope45_2x2", "x": 0, "y": 0, "z": 0, "rot": 270},
+        {"piece": "slope45_2x2", "x": 10, "y": 0, "z": 0, "rot": 90},
+        {"piece": "slope45_2x2", "x": 0, "y": 0, "z": 3, "rot": 270},
+        {"piece": "slope45_2x2", "x": 10, "y": 0, "z": 3, "rot": 90},
+        {"piece": "brick_2x4", "x": 2, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_2x4", "x": 6, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 1, "z": 9, "rot": 0}
       ]
     },
     {
@@ -161,27 +396,75 @@
         {"piece": "brick_2x4", "count": 3},
         {"piece": "brick_1x1", "count": 4},
         {"piece": "plate_1x2", "count": 2}
+      ],
+      "layout": [
+        {"piece": "brick_2x2", "x": 2, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x2", "x": 2, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x2", "x": 8, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x2", "x": 8, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x4", "x": 2, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_2x4", "x": 6, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_2x4", "x": 4, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 2, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 2, "y": 1, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 9, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 9, "y": 1, "z": 9, "rot": 0},
+        {"piece": "plate_1x2", "x": 2, "y": 0, "z": 12, "rot": 90},
+        {"piece": "plate_1x2", "x": 9, "y": 0, "z": 12, "rot": 90}
       ]
     },
     {
       "id": "bridge_long",
       "name": "Long bridge",
       "category": "bridge",
-      "description": "Three pillars, a staggered 2x4 deck and slope ramps.",
+      "description": "Three pillars, a staggered 2x4 deck, slope ramps at both ends and a small hump in the middle.",
       "parts": [
         {"piece": "brick_2x2", "count": 9},
         {"piece": "brick_2x4", "count": 6},
         {"piece": "slope45_2x2", "count": 4}
+      ],
+      "layout": [
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x2", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_2x2", "x": 7, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x2", "x": 7, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x2", "x": 7, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_2x2", "x": 14, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x2", "x": 14, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x2", "x": 14, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_2x4", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_2x4", "x": 4, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_2x4", "x": 8, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_2x4", "x": 12, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_2x4", "x": 2, "y": 0, "z": 12, "rot": 0},
+        {"piece": "brick_2x4", "x": 10, "y": 0, "z": 12, "rot": 0},
+        {"piece": "slope45_2x2", "x": 0, "y": 0, "z": 12, "rot": 270},
+        {"piece": "slope45_2x2", "x": 14, "y": 0, "z": 12, "rot": 90},
+        {"piece": "slope45_2x2", "x": 6, "y": 0, "z": 12, "rot": 270},
+        {"piece": "slope45_2x2", "x": 8, "y": 0, "z": 12, "rot": 90}
       ]
     },
     {
       "id": "bridge_steps",
       "name": "Step bridge",
       "category": "bridge",
-      "description": "Stairs up and down made of 2x4 bricks, with a 2x2 landing on top.",
+      "description": "Stairs up and down made of 2x4 bricks, with a small 2x2 lookout on top.",
       "parts": [
         {"piece": "brick_2x4", "count": 6},
         {"piece": "brick_2x2", "count": 4}
+      ],
+      "layout": [
+        {"piece": "brick_2x4", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x4", "x": 4, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x4", "x": 8, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_2x4", "x": 2, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x4", "x": 6, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_2x4", "x": 4, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_2x2", "x": 4, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_2x2", "x": 6, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_2x2", "x": 5, "y": 0, "z": 12, "rot": 0},
+        {"piece": "brick_2x2", "x": 5, "y": 0, "z": 15, "rot": 0}
       ]
     },
     {
@@ -194,6 +477,20 @@
         {"piece": "brick_1x2", "count": 4},
         {"piece": "brick_1x1", "count": 4},
         {"piece": "slope45_2x2", "count": 2}
+      ],
+      "layout": [
+        {"piece": "brick_2x4", "x": 0, "y": 0, "z": 0, "rot": 90},
+        {"piece": "brick_1x2", "x": 0, "y": 1, "z": 3, "rot": 90},
+        {"piece": "brick_1x2", "x": 1, "y": 1, "z": 3, "rot": 90},
+        {"piece": "brick_1x1", "x": 0, "y": 3, "z": 3, "rot": 0},
+        {"piece": "brick_1x1", "x": 1, "y": 3, "z": 3, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 1, "z": 6, "rot": 90},
+        {"piece": "brick_1x2", "x": 1, "y": 1, "z": 6, "rot": 90},
+        {"piece": "brick_1x1", "x": 0, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x1", "x": 1, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_2x4", "x": 0, "y": 0, "z": 9, "rot": 90},
+        {"piece": "slope45_2x2", "x": 0, "y": 0, "z": 12, "rot": 0},
+        {"piece": "slope45_2x2", "x": 0, "y": 2, "z": 12, "rot": 180}
       ]
     },
     {
@@ -206,18 +503,66 @@
         {"piece": "brick_1x2", "count": 6},
         {"piece": "brick_1x1", "count": 2},
         {"piece": "slope45_2x2", "count": 4}
+      ],
+      "layout": [
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 0, "rot": 90},
+        {"piece": "brick_1x4", "x": 3, "y": 0, "z": 0, "rot": 90},
+        {"piece": "brick_1x2", "x": 1, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 3, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 0, "z": 3, "rot": 90},
+        {"piece": "brick_1x1", "x": 0, "y": 2, "z": 3, "rot": 0},
+        {"piece": "brick_1x2", "x": 3, "y": 0, "z": 3, "rot": 90},
+        {"piece": "brick_1x1", "x": 3, "y": 2, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 6, "rot": 90},
+        {"piece": "brick_1x2", "x": 1, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 3, "y": 2, "z": 6, "rot": 90},
+        {"piece": "brick_1x2", "x": 3, "y": 0, "z": 6, "rot": 90},
+        {"piece": "slope45_2x2", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "slope45_2x2", "x": 2, "y": 0, "z": 9, "rot": 0},
+        {"piece": "slope45_2x2", "x": 0, "y": 2, "z": 9, "rot": 180},
+        {"piece": "slope45_2x2", "x": 2, "y": 2, "z": 9, "rot": 180}
       ]
     },
     {
       "id": "house_tiny",
       "name": "Tiny house",
       "category": "house",
-      "description": "6x4 house, 4 rows with door gap, two rows of 2x2 slopes as the roof.",
+      "description": "6x4 house, 4 rows with a door on the side, two rows of 2x2 slopes as the roof.",
       "parts": [
         {"piece": "brick_1x4", "count": 8},
         {"piece": "brick_1x2", "count": 10},
         {"piece": "brick_1x1", "count": 4},
         {"piece": "slope45_2x2", "count": 6}
+      ],
+      "layout": [
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 2, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 5, "y": 1, "z": 0, "rot": 90},
+        {"piece": "brick_1x4", "x": 5, "y": 0, "z": 3, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x1", "x": 4, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 3, "rot": 0},
+        {"piece": "brick_1x1", "x": 4, "y": 3, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 2, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 5, "y": 1, "z": 6, "rot": 90},
+        {"piece": "brick_1x4", "x": 5, "y": 0, "z": 9, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 4, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 4, "y": 3, "z": 9, "rot": 0},
+        {"piece": "slope45_2x2", "x": 0, "y": 0, "z": 12, "rot": 0},
+        {"piece": "slope45_2x2", "x": 2, "y": 0, "z": 12, "rot": 0},
+        {"piece": "slope45_2x2", "x": 4, "y": 0, "z": 12, "rot": 0},
+        {"piece": "slope45_2x2", "x": 0, "y": 2, "z": 12, "rot": 180},
+        {"piece": "slope45_2x2", "x": 2, "y": 2, "z": 12, "rot": 180},
+        {"piece": "slope45_2x2", "x": 4, "y": 2, "z": 12, "rot": 180}
       ]
     },
     {
@@ -231,24 +576,79 @@
         {"piece": "brick_1x1", "count": 7},
         {"piece": "slope45_2x2", "count": 6},
         {"piece": "slope45_2x1", "count": 2}
+      ],
+      "layout": [
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 2, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 5, "y": 1, "z": 0, "rot": 90},
+        {"piece": "brick_1x4", "x": 5, "y": 0, "z": 3, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x1", "x": 4, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 3, "rot": 0},
+        {"piece": "brick_1x1", "x": 4, "y": 3, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 2, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 5, "y": 1, "z": 6, "rot": 90},
+        {"piece": "brick_1x4", "x": 5, "y": 0, "z": 9, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 4, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 4, "y": 3, "z": 9, "rot": 0},
+        {"piece": "slope45_2x2", "x": 0, "y": 0, "z": 12, "rot": 0},
+        {"piece": "slope45_2x2", "x": 2, "y": 0, "z": 12, "rot": 0},
+        {"piece": "slope45_2x2", "x": 4, "y": 0, "z": 12, "rot": 0},
+        {"piece": "slope45_2x2", "x": 0, "y": 2, "z": 12, "rot": 180},
+        {"piece": "slope45_2x2", "x": 2, "y": 2, "z": 12, "rot": 180},
+        {"piece": "slope45_2x2", "x": 4, "y": 2, "z": 12, "rot": 180},
+        {"piece": "slope45_2x1", "x": 0, "y": 1, "z": 15, "rot": 270},
+        {"piece": "slope45_2x1", "x": 0, "y": 2, "z": 15, "rot": 270},
+        {"piece": "brick_1x1", "x": 5, "y": 2, "z": 15, "rot": 0},
+        {"piece": "brick_1x1", "x": 5, "y": 2, "z": 18, "rot": 0},
+        {"piece": "brick_1x1", "x": 5, "y": 2, "z": 21, "rot": 0}
       ]
     },
     {
       "id": "house_garage",
       "name": "Garage",
       "category": "house",
-      "description": "6x4 walls with a wide opening and a flat roof of 2x4 bricks.",
+      "description": "6x4 walls with a wide front opening, a small back window and a flat roof of 2x4 bricks.",
       "parts": [
         {"piece": "brick_1x4", "count": 8},
         {"piece": "brick_1x2", "count": 6},
         {"piece": "brick_2x4", "count": 4}
+      ],
+      "layout": [
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 0, "rot": 90},
+        {"piece": "brick_1x4", "x": 5, "y": 0, "z": 0, "rot": 90},
+        {"piece": "brick_1x4", "x": 1, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 3, "rot": 90},
+        {"piece": "brick_1x4", "x": 5, "y": 0, "z": 3, "rot": 90},
+        {"piece": "brick_1x2", "x": 3, "y": 3, "z": 3, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 0, "z": 6, "rot": 90},
+        {"piece": "brick_1x2", "x": 0, "y": 2, "z": 6, "rot": 90},
+        {"piece": "brick_1x2", "x": 5, "y": 0, "z": 6, "rot": 90},
+        {"piece": "brick_1x2", "x": 5, "y": 2, "z": 6, "rot": 90},
+        {"piece": "brick_1x2", "x": 3, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 9, "rot": 90},
+        {"piece": "brick_1x4", "x": 5, "y": 0, "z": 9, "rot": 90},
+        {"piece": "brick_1x4", "x": 1, "y": 3, "z": 9, "rot": 0},
+        {"piece": "brick_2x4", "x": -1, "y": 0, "z": 12, "rot": 90},
+        {"piece": "brick_2x4", "x": 1, "y": 0, "z": 12, "rot": 90},
+        {"piece": "brick_2x4", "x": 3, "y": 0, "z": 12, "rot": 90},
+        {"piece": "brick_2x4", "x": 5, "y": 0, "z": 12, "rot": 90}
       ]
     },
     {
       "id": "house_cottage",
       "name": "Cottage",
       "category": "house",
-      "description": "8x6 house with door, 1x2 plate doorstep and a full slope roof.",
+      "description": "8x4 house with a door, a two-plate doorstep and a full slope roof with small slopes on the ridge.",
       "parts": [
         {"piece": "brick_1x4", "count": 12},
         {"piece": "brick_1x2", "count": 12},
@@ -256,13 +656,55 @@
         {"piece": "slope45_2x2", "count": 8},
         {"piece": "slope45_2x1", "count": 2},
         {"piece": "plate_1x2", "count": 2}
+      ],
+      "layout": [
+        {"piece": "plate_1x2", "x": 2, "y": -1, "z": 0, "rot": 0},
+        {"piece": "plate_1x2", "x": 2, "y": -1, "z": 1, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 1, "z": 0, "rot": 90},
+        {"piece": "brick_1x2", "x": 7, "y": 1, "z": 0, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x2", "x": 6, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 1, "z": 3, "rot": 90},
+        {"piece": "brick_1x2", "x": 7, "y": 1, "z": 3, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 3, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x4", "x": 2, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 6, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 1, "z": 6, "rot": 90},
+        {"piece": "brick_1x2", "x": 7, "y": 1, "z": 6, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 4, "y": 3, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 0, "y": 1, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 0, "y": 2, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 7, "y": 1, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 7, "y": 2, "z": 9, "rot": 0},
+        {"piece": "slope45_2x2", "x": 0, "y": 0, "z": 12, "rot": 0},
+        {"piece": "slope45_2x2", "x": 2, "y": 0, "z": 12, "rot": 0},
+        {"piece": "slope45_2x2", "x": 4, "y": 0, "z": 12, "rot": 0},
+        {"piece": "slope45_2x2", "x": 6, "y": 0, "z": 12, "rot": 0},
+        {"piece": "slope45_2x2", "x": 0, "y": 2, "z": 12, "rot": 180},
+        {"piece": "slope45_2x2", "x": 2, "y": 2, "z": 12, "rot": 180},
+        {"piece": "slope45_2x2", "x": 4, "y": 2, "z": 12, "rot": 180},
+        {"piece": "slope45_2x2", "x": 6, "y": 2, "z": 12, "rot": 180},
+        {"piece": "slope45_2x1", "x": 0, "y": 1, "z": 15, "rot": 270},
+        {"piece": "slope45_2x1", "x": 6, "y": 2, "z": 15, "rot": 90}
       ]
     },
     {
       "id": "house_two_story",
       "name": "Two-story house",
       "category": "house",
-      "description": "Two floors of 6x4 walls with a 2x4 brick floor between them, slope roof.",
+      "description": "Two floors of 6x4 walls with a 2x4 brick floor between them (it sticks out a stud on each side), slope roof.",
       "parts": [
         {"piece": "brick_1x4", "count": 16},
         {"piece": "brick_1x2", "count": 16},
@@ -270,6 +712,56 @@
         {"piece": "brick_2x4", "count": 4},
         {"piece": "slope45_2x2", "count": 6},
         {"piece": "plate_1x2", "count": 2}
+      ],
+      "layout": [
+        {"piece": "plate_1x2", "x": -1, "y": 1, "z": 0, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 0, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 2, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 3, "z": 0, "rot": 0},
+        {"piece": "brick_1x2", "x": 5, "y": 1, "z": 0, "rot": 90},
+        {"piece": "brick_1x4", "x": 5, "y": 0, "z": 3, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x1", "x": 4, "y": 0, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 3, "rot": 0},
+        {"piece": "brick_1x1", "x": 4, "y": 3, "z": 3, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 0, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 2, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 3, "z": 6, "rot": 0},
+        {"piece": "brick_1x2", "x": 5, "y": 1, "z": 6, "rot": 90},
+        {"piece": "brick_1x4", "x": 5, "y": 0, "z": 9, "rot": 90},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 4, "y": 0, "z": 9, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 9, "rot": 0},
+        {"piece": "brick_1x1", "x": 4, "y": 3, "z": 9, "rot": 0},
+        {"piece": "brick_2x4", "x": -1, "y": 0, "z": 12, "rot": 90},
+        {"piece": "brick_2x4", "x": 1, "y": 0, "z": 12, "rot": 90},
+        {"piece": "brick_2x4", "x": 3, "y": 0, "z": 12, "rot": 90},
+        {"piece": "brick_2x4", "x": 5, "y": 0, "z": 12, "rot": 90},
+        {"piece": "plate_1x2", "x": 1, "y": 0, "z": 15, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 15, "rot": 90},
+        {"piece": "brick_1x4", "x": 5, "y": 0, "z": 15, "rot": 90},
+        {"piece": "brick_1x2", "x": 3, "y": 0, "z": 15, "rot": 0},
+        {"piece": "brick_1x4", "x": 1, "y": 3, "z": 15, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 18, "rot": 90},
+        {"piece": "brick_1x4", "x": 5, "y": 0, "z": 18, "rot": 90},
+        {"piece": "brick_1x2", "x": 3, "y": 0, "z": 18, "rot": 0},
+        {"piece": "brick_1x4", "x": 1, "y": 3, "z": 18, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 0, "z": 21, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 0, "z": 21, "rot": 0},
+        {"piece": "brick_1x4", "x": 0, "y": 3, "z": 21, "rot": 0},
+        {"piece": "brick_1x2", "x": 4, "y": 3, "z": 21, "rot": 0},
+        {"piece": "brick_1x2", "x": 0, "y": 1, "z": 21, "rot": 90},
+        {"piece": "brick_1x2", "x": 5, "y": 1, "z": 21, "rot": 90},
+        {"piece": "slope45_2x2", "x": 0, "y": 0, "z": 24, "rot": 0},
+        {"piece": "slope45_2x2", "x": 2, "y": 0, "z": 24, "rot": 0},
+        {"piece": "slope45_2x2", "x": 4, "y": 0, "z": 24, "rot": 0},
+        {"piece": "slope45_2x2", "x": 0, "y": 2, "z": 24, "rot": 180},
+        {"piece": "slope45_2x2", "x": 2, "y": 2, "z": 24, "rot": 180},
+        {"piece": "slope45_2x2", "x": 4, "y": 2, "z": 24, "rot": 180}
       ]
     }
   ]
