@@ -2,7 +2,7 @@
 
 A web page where you upload (or snap) a photo of loose pieces and get back:
 1. the photo with every piece boxed and named, with how sure the model is,
-2. piece counts by type and color,
+2. piece counts by type and color, which you can fix before matching (see below),
 3. the builds from `builds/builds.json`, best match first, with the pieces you're missing,
 4. a 3D view of a build you can turn around, with the pieces you're missing in red,
 5. step-by-step instructions for a build, with your pieces checked off (see `docs/build-instructions.md`).
@@ -43,12 +43,23 @@ The cell keeps running while the demo is up; that's normal. To stop it, press th
 - `git clone` asks for a username: your `GH_TOKEN` secret expired. Make a new one (`docs/colab-setup.md`, Part 2).
 - The examples don't show up: the demo still works, just upload a photo yourself.
 
+## Fixing the counts before matching
+
+Under the photo is a **Check your pieces** table with one row per piece type: what the model found, and a **You have** column you can change. Builds, the 3D view and the booklets are all matched against **You have**.
+
+- **Wrong piece type** (say it called a 1x4 brick a 2x4): take one off Brick 2 x 4 and add one to Brick 1 x 4.
+- **Missed a piece or saw one that isn't there:** raise or lower that count. 0 removes it.
+- Press **Match builds with my counts**. The line under the buttons lists what you changed compared with the model. **Undo my changes** puts the model's counts back.
+- No photo at all? Type your counts straight into the table and press the button.
+
+In a live demo this is a nice moment: show the model's mistake in the boxed photo, fix it in the table, and the ranking and the red pieces in the 3D view change.
+
 ## Tips for a live demo
 
 - Lead with an example photo you know works (pile 10 is the honest one: never trained on, and the only pile with touching pieces). Then try a fresh photo live.
 - For a fresh photo: plain background, good light, phone held straight above, pieces spread out, only the 8 tier-1 types.
 - Lowering the confidence slider finds more pieces but adds false boxes; 0.5 is a good default.
-- If it gets a piece wrong, that's a good moment, not a bad one: say which mix-up it is and why (see below).
+- If it gets a piece wrong, that's a good moment, not a bad one: say which mix-up it is and why (see below), then fix it in the table.
 
 ## Talking points (honest numbers)
 

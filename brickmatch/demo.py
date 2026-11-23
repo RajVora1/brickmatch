@@ -1,4 +1,5 @@
-"""Web demo: upload a pile photo, see every piece boxed and named, the counts, what you can build,
+"""Web demo: upload a pile photo, see every piece boxed and named, fix the counts if the model got some wrong,
+see what you can build,
 a 3D view of a build you can turn around (missing pieces in red), and step-by-step instructions
 with your pieces checked off.
 
@@ -20,6 +21,7 @@ import yaml
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 from brickmatch.booklet import make_booklet
+from brickmatch.counts import HEADERS, changes, read_table, table
 from brickmatch.instructions import draw_step, first_stuck_step, make_steps, step_text, step_title
 from brickmatch.match import load_builds, rank_builds
 from brickmatch.pipeline import detect_pieces, load_models
@@ -28,6 +30,34 @@ from brickmatch.viewer import save as viewer_save
 
 ROOT = Path(__file__).resolve().parent.parent
 NAMES = {p["id"]: p["name"] for p in yaml.safe_load((ROOT / "configs/pieces.yaml").read_text())["pieces"]}
+
+
+def counts_table(**kw):
+    """Editable counts table: only "You have" can be changed (on Gradio versions that support it)."""
+    import inspect  # noqa: PLC0415
+    params = inspect.signature(gr.Dataframe.__init__).parameters
+    if "static_columns" in params:
+        kw["static_columns"] = [0, 1, 3]
+    return gr.Dataframe(headers=HEADERS, datatype=["str", "number", "number", "str"], interactive=True, **kw)
+
+
+def build_rows(counts):
+    rows = []
+    for b in rank_builds(counts, min_coverage=0.0)[:8]:
+        missing = ", ".join(f"{n} x {NAMES.get(p, p)}" for p, n in b["missing"].items()) or "nothing, you can build it"
+        rows.append([b["name"], b["category"], f"{b['coverage']:.0%}", missing])
+    return rows
+
+
+def edit_note(found_counts, have, from_photo):
+    if not from_photo:
+        return f"**Matching against the {sum(have.values())} pieces you typed in.**"
+    changed = changes(found_counts, have)
+    if not changed:
+        return ("**Matching against the model's counts.** If it got a piece wrong, fix the **You have** column "
+                "and press **Match builds with my counts**.")
+    return (f"**Matching against your counts ({sum(have.values())} pieces).** You changed {len(changed)} piece "
+            "type" + ("s" if len(changed) > 1 else "") + ":  \n" + "  \n".join(changed))
 
 
 def box_colors(classes):
@@ -109,20 +139,31 @@ def make_app(models, examples=()):
             raise gr.Error("Upload a photo of your pieces first.")
         img = ImageOps.exif_transpose(img).convert("RGB")
         found = detect_pieces(img, models, conf)
-        counts = Counter(f["piece"] for f in found)
-        count_rows = []
-        for piece, n in counts.most_common():
-            shades = Counter(f["color"] for f in found if f["piece"] == piece)
-            count_rows.append([NAMES.get(piece, piece), n, ", ".join(f"{k} {v}" for k, v in shades.most_common())])
-        build_rows = []
-        for b in rank_builds(dict(counts), min_coverage=0.0)[:8]:
-            missing = ", ".join(f"{n} x {NAMES.get(p, p)}" for p, n in b["missing"].items()) or "nothing, you can build it"
-            build_rows.append([b["name"], b["category"], f"{b['coverage']:.0%}", missing])
+        counts = dict(Counter(f["piece"] for f in found))
+        shades = {piece: ", ".join(f"{k} {v}" for k, v in Counter(f["color"] for f in found
+                                                                 if f["piece"] == piece).most_common())
+                  for piece in counts}
         unsure = sum(f["score"] < 0.6 for f in found)
         summary = f"**Found {len(found)} pieces of {len(counts)} types.**"
         if unsure:
             summary += f" The model was unsure (under 60%) about {unsure} of them."
-        return draw(img, found, colors), summary, count_rows, build_rows, dict(counts)
+        summary += " Check the counts below and fix any it got wrong."
+        rows = table(counts, shades)
+        return (draw(img, found, colors), summary, rows, build_rows(counts), counts, counts, rows,
+                edit_note(counts, counts, True))
+
+    def apply(rows, found_counts):
+        """Match builds against whatever is in the "You have" column."""
+        try:
+            have = read_table(rows)
+        except ValueError as e:
+            raise gr.Error(str(e)) from None
+        return build_rows(have), have, edit_note(found_counts or {}, have, found_counts is not None)
+
+    def undo(model_rows, found_counts):
+        if model_rows is None:  # no photo yet: clear what was typed in
+            return table({}), build_rows({}), None, "Counts cleared."
+        return model_rows, build_rows(found_counts), dict(found_counts), edit_note(found_counts, found_counts, True)
 
     with gr.Blocks(title="BrickMatch") as app:
         gr.Markdown("# BrickMatch\nPhoto of loose LEGO pieces in, what you can build with them out. "
@@ -137,10 +178,20 @@ def make_app(models, examples=()):
             with gr.Column():
                 boxed = gr.Image(type="pil", label="What the model sees")
                 summary = gr.Markdown()
-        counts_tbl = gr.Dataframe(headers=["Piece", "Count", "Colors"], label="Piece counts", interactive=False)
+        gr.Markdown("## Check your pieces\nThe model can get pieces wrong (a 1x4 brick seen from the side can look "
+                    "like a 2x4). Fix the **You have** column before matching: to fix a wrong piece, take one off the "
+                    "type the model said and add one to the right type. Set a count to 0 to remove a piece. No photo? "
+                    "You can also just type in what you have.")
+        counts_tbl = counts_table(value=table({}), label="Piece counts (click a number in \"You have\" to change it)")
+        with gr.Row():
+            apply_btn = gr.Button("Match builds with my counts", variant="primary")
+            undo_btn = gr.Button("Undo my changes")
+        note = gr.Markdown()
         builds_tbl = gr.Dataframe(headers=["Build", "Type", "Pieces you have", "Missing"],
                                   label="What you can build (best first)", interactive=False)
-        counts = gr.State(None)
+        counts = gr.State(None)        # what builds are matched against (the user's counts once edited)
+        found_counts = gr.State(None)  # what the model found, to show what changed
+        model_rows = gr.State(None)    # the table as the model filled it, for Undo
         gr.Markdown("## Your build in 3D and step by step\nDrag the 3D view to turn it, scroll to zoom. Pieces you're "
                     "missing are red, see-through and pulsing; the Steps slider builds it up one layer at a time.")
         with gr.Row():
@@ -157,10 +208,15 @@ def make_app(models, examples=()):
             booklet = gr.File(label="LEGO-style booklet (PDF) for this build")
             page3d = gr.File(label="3D view as a web page (open in any browser)")
         checklist = gr.Markdown()
-        go.click(run, [photo, conf], [boxed, summary, counts_tbl, builds_tbl, counts]).then(
-            best_with_steps, [counts, pick], pick).then(instructions, [pick, counts], [view3d, step_pics, checklist, booklet, page3d])
-        show.click(instructions, [pick, counts], [view3d, step_pics, checklist, booklet, page3d])
-        pick.input(instructions, [pick, counts], [view3d, step_pics, checklist, booklet, page3d])
+        build_outputs = [view3d, step_pics, checklist, booklet, page3d]
+        go.click(run, [photo, conf], [boxed, summary, counts_tbl, builds_tbl, counts, found_counts, model_rows, note]
+                 ).then(best_with_steps, [counts, pick], pick).then(instructions, [pick, counts], build_outputs)
+        apply_btn.click(apply, [counts_tbl, found_counts], [builds_tbl, counts, note]).then(
+            best_with_steps, [counts, pick], pick).then(instructions, [pick, counts], build_outputs)
+        undo_btn.click(undo, [model_rows, found_counts], [counts_tbl, builds_tbl, counts, note]).then(
+            best_with_steps, [counts, pick], pick).then(instructions, [pick, counts], build_outputs)
+        show.click(instructions, [pick, counts], build_outputs)
+        pick.input(instructions, [pick, counts], build_outputs)
     return app
 
 
