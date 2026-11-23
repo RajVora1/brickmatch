@@ -1,5 +1,6 @@
 """Web demo: upload a pile photo, see every piece boxed and named, the counts, what you can build,
-and step-by-step instructions for a build with your pieces checked off.
+a 3D view of a build you can turn around (missing pieces in red), and step-by-step instructions
+with your pieces checked off.
 
     python -m brickmatch.demo --detector detector_best.pt \
         --classifier runs/classifier_resnet18_1.0_pad_bal.pt --share
@@ -22,6 +23,8 @@ from brickmatch.booklet import make_booklet
 from brickmatch.instructions import draw_step, first_stuck_step, make_steps, step_text, step_title
 from brickmatch.match import load_builds, rank_builds
 from brickmatch.pipeline import detect_pieces, load_models
+from brickmatch.viewer import embed as viewer_embed
+from brickmatch.viewer import save as viewer_save
 
 ROOT = Path(__file__).resolve().parent.parent
 NAMES = {p["id"]: p["name"] for p in yaml.safe_load((ROOT / "configs/pieces.yaml").read_text())["pieces"]}
@@ -57,11 +60,12 @@ def draw(img, found, colors):
 
 
 def instructions(build_id, counts):
-    """Step pictures (with captions) and a checklist for one build, checked against the detected counts."""
+    """3D view, step pictures (with captions), a checklist and downloads for one build,
+    checked against the detected counts."""
     import matplotlib.pyplot as plt  # noqa: PLC0415
     build = next((b for b in load_builds() if b["id"] == build_id), None)
     if build is None or not build.get("layout"):
-        return [], "This build doesn't have step-by-step instructions yet.", None
+        return "", [], "This build doesn't have step-by-step instructions yet.", None, None
     steps = make_steps(build, counts)
     gallery = []
     for s in steps:
@@ -83,8 +87,10 @@ def instructions(build_id, counts):
             lines.append(f"**You can build up to step {stuck - 1}.** Pieces drawn in red are the ones you're missing.")
     for s in steps:
         lines.append(f"**{step_title(s)}**  \n" + "  \n".join(step_text(s)))
-    booklet, _ = make_booklet(build, counts, tempfile.mkdtemp(prefix="booklet_"))
-    return gallery, "\n\n".join(lines), str(booklet)
+    out = tempfile.mkdtemp(prefix="booklet_")
+    booklet, _ = make_booklet(build, counts, out)
+    page = viewer_save(build, counts, Path(out) / f"{build['id']}_3d.html")
+    return viewer_embed(build, counts), gallery, "\n\n".join(lines), str(booklet), str(page)
 
 
 def best_with_steps(counts, current):
@@ -135,21 +141,26 @@ def make_app(models, examples=()):
         builds_tbl = gr.Dataframe(headers=["Build", "Type", "Pieces you have", "Missing"],
                                   label="What you can build (best first)", interactive=False)
         counts = gr.State(None)
-        gr.Markdown("## Step-by-step instructions\nOne step per layer. Each picture shows the build so far (left) "
+        gr.Markdown("## Your build in 3D and step by step\nDrag the 3D view to turn it, scroll to zoom. Pieces you're "
+                    "missing are red, see-through and pulsing; the Steps slider builds it up one layer at a time.")
+        with gr.Row():
+            pick = gr.Dropdown(with_steps, value=with_steps[0][1] if with_steps else None, label="Build")
+            show = gr.Button("Show build")
+        view3d = gr.HTML()
+        gr.Markdown("### Step-by-step instructions\nOne step per layer. Each picture shows the build so far (left) "
                     "and a map of the new layer seen from above (right), with columns counted from the left and rows "
                     "from the front. The numbers match the list. White pieces are from earlier steps, colored ones are "
                     "added in this step, and red see-through ones are pieces you're missing.")
-        with gr.Row():
-            pick = gr.Dropdown(with_steps, value=with_steps[0][1] if with_steps else None, label="Build")
-            show = gr.Button("Show steps")
         step_pics = gr.Gallery(label="Steps (click one to see it bigger)", columns=2, height="auto",
                                object_fit="contain")
-        booklet = gr.File(label="LEGO-style booklet (PDF) for this build")
+        with gr.Row():
+            booklet = gr.File(label="LEGO-style booklet (PDF) for this build")
+            page3d = gr.File(label="3D view as a web page (open in any browser)")
         checklist = gr.Markdown()
         go.click(run, [photo, conf], [boxed, summary, counts_tbl, builds_tbl, counts]).then(
-            best_with_steps, [counts, pick], pick).then(instructions, [pick, counts], [step_pics, checklist, booklet])
-        show.click(instructions, [pick, counts], [step_pics, checklist, booklet])
-        pick.input(instructions, [pick, counts], [step_pics, checklist, booklet])
+            best_with_steps, [counts, pick], pick).then(instructions, [pick, counts], [view3d, step_pics, checklist, booklet, page3d])
+        show.click(instructions, [pick, counts], [view3d, step_pics, checklist, booklet, page3d])
+        pick.input(instructions, [pick, counts], [view3d, step_pics, checklist, booklet, page3d])
     return app
 
 

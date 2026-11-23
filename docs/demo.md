@@ -4,7 +4,8 @@ A web page where you upload (or snap) a photo of loose pieces and get back:
 1. the photo with every piece boxed and named, with how sure the model is,
 2. piece counts by type and color,
 3. the builds from `builds/builds.json`, best match first, with the pieces you're missing,
-4. step-by-step instructions for a build, with your pieces checked off (see `docs/build-instructions.md`).
+4. a 3D view of a build you can turn around, with the pieces you're missing in red,
+5. step-by-step instructions for a build, with your pieces checked off (see `docs/build-instructions.md`).
 
 It runs on Colab and gives you a public link (`https://xxxx.gradio.live`) you can open on your laptop or phone, or send to someone. The link works for 72 hours, but only while the Colab cell is still running.
 
