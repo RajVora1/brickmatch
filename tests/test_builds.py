@@ -8,7 +8,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from brickmatch.instructions import check_layout, first_stuck_step, make_steps  # noqa: E402
+from brickmatch.instructions import check_layout, first_stuck_step, make_steps, step_text  # noqa: E402
 from brickmatch.match import load_builds, rank_builds  # noqa: E402
 
 TIER1 = {p["id"] for p in yaml.safe_load((ROOT / "configs" / "pieces.yaml").read_text())["pieces"] if p["tier"] == 1}
@@ -37,10 +37,10 @@ def test_exact_inventory_gives_full_coverage():
 
 
 def test_layouts_are_buildable():
-    """Every layout matches its parts list, has no overlapping pieces and nothing floating."""
+    """Every build has a layout that matches its parts list, with no overlapping pieces and nothing floating."""
     for b in load_builds():
-        if b.get("layout"):
-            assert check_layout(b) == [], f"{b['id']}: {check_layout(b)}"
+        assert b.get("layout"), f"{b['id']} has no layout"
+        assert check_layout(b) == [], f"{b['id']}: {check_layout(b)}"
 
 
 def test_layout_checks_catch_mistakes():
@@ -71,6 +71,11 @@ def test_steps_check_off_owned_pieces_in_order():
     assert first_stuck_step(steps) == 4  # the last row's two 1x2 bricks are the missing ones
     assert first_stuck_step(make_steps(wall, {"brick_1x4": 6, "brick_1x2": 4})) is None
     assert all(p["owned"] is None for s in make_steps(wall) for p in s["pieces"])
+    # Each piece gets a number and a place in words, counted from the front-left of the build.
+    first = make_steps(wall)[1]["pieces"]
+    assert [p["n"] for p in first] == [1, 2, 3]
+    assert first[1]["where"] == "left to right over columns 3-6, row 1 (front)"
+    assert step_text(steps[3])[2] == "✗ 3. Brick 1 x 2: left to right over columns 7-8, row 1 (front) (missing)"
 
 
 if __name__ == "__main__":

@@ -17,7 +17,7 @@ import gradio as gr
 import yaml
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
-from brickmatch.instructions import draw_step, first_stuck_step, make_steps, step_text
+from brickmatch.instructions import draw_step, first_stuck_step, make_steps, step_text, step_title
 from brickmatch.match import load_builds, rank_builds
 from brickmatch.pipeline import detect_pieces, load_models
 
@@ -80,7 +80,7 @@ def instructions(build_id, counts):
         else:
             lines.append(f"**You can build up to step {stuck - 1}.** Pieces drawn in red are the ones you're missing.")
     for s in steps:
-        lines.append(f"**Step {s['number']}**  \n" + "  \n".join(step_text(s)))
+        lines.append(f"**{step_title(s)}**  \n" + "  \n".join(step_text(s)))
     return gallery, "\n\n".join(lines)
 
 
@@ -132,15 +132,16 @@ def make_app(models, examples=()):
         builds_tbl = gr.Dataframe(headers=["Build", "Type", "Pieces you have", "Missing"],
                                   label="What you can build (best first)", interactive=False)
         counts = gr.State(None)
-        gr.Markdown("## Step-by-step instructions\nOne step per layer. Grey pieces are from earlier steps, "
-                    "colored ones are added in this step, and red see-through ones are pieces you're missing.")
+        gr.Markdown("## Step-by-step instructions\nOne step per layer. Each picture shows the build so far (left) "
+                    "and a map of the new layer seen from above (right), with columns counted from the left and rows "
+                    "from the front. The numbers match the list. Grey pieces are from earlier steps, colored ones are "
+                    "added in this step, and red see-through ones are pieces you're missing.")
         with gr.Row():
-            pick = gr.Dropdown(with_steps, value=with_steps[0][1] if with_steps else None,
-                               label="Build (only builds with instructions so far)")
+            pick = gr.Dropdown(with_steps, value=with_steps[0][1] if with_steps else None, label="Build")
             show = gr.Button("Show steps")
-        with gr.Row():
-            step_pics = gr.Gallery(label="Steps", columns=4, height="auto")
-            checklist = gr.Markdown()
+        step_pics = gr.Gallery(label="Steps (click one to see it bigger)", columns=2, height="auto",
+                               object_fit="contain")
+        checklist = gr.Markdown()
         go.click(run, [photo, conf], [boxed, summary, counts_tbl, builds_tbl, counts]).then(
             best_with_steps, [counts, pick], pick).then(instructions, [pick, counts], [step_pics, checklist])
         show.click(instructions, [pick, counts], [step_pics, checklist])
