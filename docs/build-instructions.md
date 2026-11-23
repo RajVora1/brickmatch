@@ -45,7 +45,7 @@ Step 2: 3 pieces, on top of step 1
 At rot 0, bricks and plates lie along x (a 1x4 covers x to x+3), and slopes are 2 deep along y with their studs
 on the back row.
 
-The 3D viewer will read this same format, so a layout written now is reused there.
+The 3D viewer (below) reads this same format, so every build with a layout can be shown in 3D.
 
 ## Adding a new build
 
@@ -71,7 +71,7 @@ short, the later steps are the ones marked missing.
 
 ## Known limits
 
-- Pictures are drawn with matplotlib from one fixed angle, without studs. The 3D viewer is the place to fix that.
+- Step pictures are drawn from one fixed angle. The 3D viewer lets you turn the build around.
 - A step is one whole layer. A layer with many pieces (a house wall has up to 8) could be split into smaller steps.
 - The checks catch overlaps and floating pieces, but not a build that falls apart into two loose halves.
 - Colors in the pictures come from the piece type unless the layout gives one. The checklist matches by type
@@ -92,3 +92,33 @@ download button for the booklet of the build you pick.
 All the pictures (booklets and step pictures) are drawn by `brickmatch/render.py`. It cuts every piece into
 stud-by-plate cells and paints them from back to front, so pieces never look like they're inside each other.
 matplotlib's own 3D mode caused that problem, because it sorts whole faces by average depth.
+
+## 3D viewer
+
+`brickmatch/viewer.py` makes a small web page where you can turn a build around with the mouse (or a finger),
+zoom in, and build it up layer by layer with a **Steps** slider. Pieces you're missing are red, see-through and
+pulse slowly, so they stand out even next to red bricks you own. Hover over a piece to see its name, step and
+where it goes. Turn on **Spin** to have it rotate by itself during a demo.
+
+```
+python -m brickmatch.viewer house_hut --have '{"brick_1x4": 4, "brick_1x2": 6, "brick_1x1": 2, "slope45_2x2": 1}'
+```
+
+saves `house_hut_3d.html`, which opens in any browser. In a Colab or Jupyter notebook it shows right in the
+output:
+
+```python
+from brickmatch.viewer import show
+show("house_hut", have={"brick_1x4": 4, "brick_1x2": 6, "brick_1x1": 2, "slope45_2x2": 1})
+```
+
+In the demo, the 3D view is at the top of the build section, with a download of the same page next to the booklet.
+
+How it stays clean: the page draws with three.js (WebGL), which keeps a depth buffer, so for every pixel only the
+surface nearest the camera is shown. Each piece is made in Python as a closed solid (a box, or a wedge-shaped
+prism for slopes) pulled in by 0.012 studs on every side, so neighbouring pieces show a thin dark seam instead of
+fighting over the same surface. Studs hidden under another piece are left out. `tests/test_viewer.py` checks that
+every piece of all 24 builds is a closed solid in the right spot and that each slope is full height exactly over
+its stud row.
+
+The page loads three.js from the jsDelivr CDN, so it needs an internet connection.
