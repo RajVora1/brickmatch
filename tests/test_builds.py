@@ -78,6 +78,17 @@ def test_steps_check_off_owned_pieces_in_order():
     assert step_text(steps[3])[2] == "✗ 3. Brick 1 x 2: left to right over columns 7-8, row 1 (front) (missing)"
 
 
+
+def test_booklet_steps_are_small_and_cover_every_piece():
+    from brickmatch.booklet import booklet_steps  # noqa: PLC0415
+    for b in load_builds():
+        steps = booklet_steps(b)
+        assert all(1 <= len(s["pieces"]) <= 4 for s in steps)
+        assert sum(len(s["pieces"]) for s in steps) == len(b["layout"])
+        heights = [p["z"] for s in steps for p in s["pieces"]]
+        assert heights == sorted(heights)  # never build under something already placed
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_"):
