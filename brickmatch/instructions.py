@@ -195,63 +195,6 @@ def _rgb(p):
     return tuple(v / 255 for v in c)
 
 
-def _shade(rgb, k):
-    return tuple(min(1.0, v * k) for v in rgb)
-
-
-def _piece_faces(p):
-    """The flat faces (each a list of 3D corners) of one piece, with a slope cut as a wedge.
-
-    Units: 1 = one stud; a plate is 0.4 tall and a brick 1.2, like real LEGO proportions.
-    """
-    w, d, h = footprint(p)
-    x0, y0, z0 = p["x"], p["y"], p["z"] * 0.4
-    x1, y1, z1 = x0 + w, y0 + d, z0 + h * 0.4
-    if p["piece"] not in SLOPES:
-        return [
-            [(x0, y0, z0), (x1, y0, z0), (x1, y1, z0), (x0, y1, z0)],
-            [(x0, y0, z1), (x1, y0, z1), (x1, y1, z1), (x0, y1, z1)],
-            [(x0, y0, z0), (x1, y0, z0), (x1, y0, z1), (x0, y0, z1)],
-            [(x0, y1, z0), (x1, y1, z0), (x1, y1, z1), (x0, y1, z1)],
-            [(x0, y0, z0), (x0, y1, z0), (x0, y1, z1), (x0, y0, z1)],
-            [(x1, y0, z0), (x1, y1, z0), (x1, y1, z1), (x1, y0, z1)],
-        ]
-    # Build the wedge facing -y in local coordinates, then turn it.
-    lw, ld = (w, d) if p.get("rot", 0) in (0, 180) else (d, w)
-    lo = z0 + 0.4  # the low front edge of a real slope is about one plate tall
-    local = [
-        [(0, 0, z0), (lw, 0, z0), (lw, ld, z0), (0, ld, z0)],  # bottom
-        [(0, ld - 1, z1), (lw, ld - 1, z1), (lw, ld, z1), (0, ld, z1)],  # flat top with the studs
-        [(0, 0, lo), (lw, 0, lo), (lw, ld - 1, z1), (0, ld - 1, z1)],  # the slope
-        [(0, 0, z0), (lw, 0, z0), (lw, 0, lo), (0, 0, lo)],  # low front
-        [(0, ld, z0), (lw, ld, z0), (lw, ld, z1), (0, ld, z1)],  # back
-        [(0, 0, z0), (0, ld, z0), (0, ld, z1), (0, ld - 1, z1), (0, 0, lo)],  # left side
-        [(lw, 0, z0), (lw, ld, z0), (lw, ld, z1), (lw, ld - 1, z1), (lw, 0, lo)],  # right side
-    ]
-    rot = p.get("rot", 0)
-
-    def turn(x, y):
-        return {0: (x, y), 90: (w - y, x), 180: (w - x, d - y), 270: (y, d - x)}[rot]
-
-    return [[(x0 + turn(x, y)[0], y0 + turn(x, y)[1], z) for x, y, z in face] for face in local]
-
-
-def _covered(p, face, filled):
-    """True if a box piece's face (index from _piece_faces) is completely hidden by other pieces."""
-    if p["piece"] in SLOPES:
-        return False
-    w, d, h = footprint(p)
-    x, y, z = p["x"], p["y"], p["z"]
-    other = {
-        1: [(x + i, y + j, z + h) for i in range(w) for j in range(d)],
-        2: [(x + i, y - 1, z + k) for i in range(w) for k in range(h)],
-        3: [(x + i, y + d, z + k) for i in range(w) for k in range(h)],
-        4: [(x - 1, y + j, z + k) for j in range(d) for k in range(h)],
-        5: [(x + w, y + j, z + k) for j in range(d) for k in range(h)],
-    }[face]
-    return all(c in filled for c in other)
-
-
 def _piece_color(p, new):
     """(fill rgb, alpha, edge) for a piece: grey if from an earlier step, red see-through if missing."""
     if not new:
@@ -273,7 +216,7 @@ def draw_step(build, steps, number):
     import matplotlib.pyplot as plt  # noqa: PLC0415
 
     fig = plt.figure(figsize=(10, 5))
-    _draw_3d(build, steps, number, fig.add_subplot(1, 2, 1, projection="3d"))
+    _draw_3d(build, steps, number, fig.add_subplot(1, 2, 1))
     _draw_map(build, steps, number, fig.add_subplot(1, 2, 2))
     step = steps[number - 1]
     fig.suptitle(f"{build['name']}: {step_title(step)} (of {len(steps)} steps)", fontsize=12)
@@ -282,39 +225,18 @@ def draw_step(build, steps, number):
 
 
 def _draw_3d(build, steps, number, ax):
-    from mpl_toolkits.mplot3d.art3d import Poly3DCollection  # noqa: PLC0415
+    """The build so far, drawn with brickmatch.render (earlier steps white, this step in color, numbers on top)."""
+    from brickmatch.render import PLATE, bounds, frame, project, render  # noqa: PLC0415
 
-    shown = [(p, s["number"] == number) for s in steps if s["number"] <= number for p in s["pieces"]]
-    filled = set().union(*(cells(p) for p, _ in shown))
-    faces, fills, edges = [], [], []
-    for p, new in shown:
-        rgb, alpha, edge = _piece_color(p, new)
-        # Simple lighting: tops brightest, sides darker, so the layers are easy to tell apart.
-        piece_faces = _piece_faces(p)
-        shades = [0.55, 1.0, 0.9, 0.7, 0.7, 0.7, 0.7] if p["piece"] in SLOPES else [0.55, 1.0, 0.75, 0.75, 0.6, 0.6]
-        for i, (face, k) in enumerate(zip(piece_faces, shades)):
-            if i == 0 or _covered(p, i, filled):
-                continue  # bottoms never show from above, and faces pressed against another piece are hidden
-            faces.append(face)
-            fills.append((*_shade(rgb, k), alpha))
-            edges.append(edge)
-    # One collection for everything, so matplotlib sorts faces (not whole pieces) back to front.
-    ax.add_collection3d(Poly3DCollection(faces, facecolors=fills, edgecolors=edges, linewidths=0.8))
-    xs = [c for p in build["layout"] for c in (p["x"], p["x"] + footprint(p)[0])]
-    ys = [c for p in build["layout"] for c in (p["y"], p["y"] + footprint(p)[1])]
-    zs = [(p["z"] + footprint(p)[2]) * 0.4 for p in build["layout"]]
-    # Same scale on every axis, sized to the whole build so the picture doesn't jump between steps.
-    ax.set_xlim(min(xs), max(xs))
-    ax.set_ylim(min(ys), max(ys))
-    ax.set_zlim(0, max(zs))
-    ax.set_box_aspect((max(xs) - min(xs), max(ys) - min(ys), max(zs)), zoom=0.9)
-    ax.view_init(elev=28, azim=-60)
-    ax.set_axis_off()
-    # Number each new piece on its top, matching the map and the checklist.
+    # Earlier pieces are drawn white so the new ones (in color) stand out.
+    earlier = [{**p, "color": "white"} for s in steps[: number - 1] for p in s["pieces"]]
+    new = steps[number - 1]["pieces"]
+    render(ax, earlier + new, {id(p) for p in new if p["owned"] is False})
+    frame(ax, bounds(build["layout"]))
     for p in steps[number - 1]["pieces"]:
         w, d, h = footprint(p)
-        ax.text(p["x"] + w / 2, p["y"] + d / 2, (p["z"] + h) * 0.4 + 0.15, str(p["n"]), ha="center",
-                va="bottom", fontsize=10, fontweight="bold", zorder=10,
+        x, y = project(p["x"] + w / 2, p["y"] + d / 2, (p["z"] + h) * PLATE + 0.35)
+        ax.text(x, y, str(p["n"]), ha="center", va="center", fontsize=10, fontweight="bold", zorder=10,
                 bbox={"boxstyle": "circle,pad=0.15", "fc": "white", "ec": "black", "lw": 0.8})
 
 

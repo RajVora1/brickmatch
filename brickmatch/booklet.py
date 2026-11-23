@@ -16,13 +16,12 @@ import math
 from collections import Counter
 from pathlib import Path
 
-from brickmatch.instructions import (NAMES, SLOPES, _covered, _piece_faces, _rgb, _shade, cells, footprint,
-                                     get_build, make_steps, stud_cells)
+from brickmatch.instructions import SLOPES, footprint, get_build, make_steps
+from brickmatch.render import bounds, frame, render
 
 PAGE = (11, 7.5)  # inches, landscape like a booklet page
 CALLOUT_FILL = (0.86, 0.92, 0.98)
 CALLOUT_EDGE = (0.45, 0.6, 0.8)
-STUD_R, STUD_H = 0.3, 0.18  # in stud units; a stud is about 0.6 of a stud-spacing wide and 0.2 tall
 MISSING = (0.85, 0.05, 0.05)
 
 
@@ -42,81 +41,19 @@ def booklet_steps(build, have=None, max_pieces=4):
     return out
 
 
-def _stud_faces(cx, cy, top):
-    """Polygons for one stud: a short cylinder standing on the square (cx, cy) at height `top`."""
-    x, y, n = cx + 0.5, cy + 0.5, 14
-    ring = [(x + STUD_R * math.cos(2 * math.pi * k / n), y + STUD_R * math.sin(2 * math.pi * k / n)) for k in range(n)]
-    sides = [[(*ring[k], top), (*ring[(k + 1) % n], top), (*ring[(k + 1) % n], top + STUD_H), (*ring[k], top + STUD_H)]
-             for k in range(n)]
-    return sides, [(px, py, top + STUD_H) for px, py in ring]
-
-
-def _add_pieces(ax, pieces, filled, missing_ids=frozenset(), edge_scale=1.0):
-    """Add pieces (with studs) to a 3D axis as one face collection, so matplotlib sorts faces back to front."""
-    from mpl_toolkits.mplot3d.art3d import Poly3DCollection  # noqa: PLC0415
-
-    faces, fills, edges, widths = [], [], [], []
-
-    def add(face, rgb, alpha, edge, lw):
-        faces.append(face)
-        fills.append((*rgb, alpha))
-        edges.append(edge)
-        widths.append(lw)
-
-    for p in pieces:
-        rgb = _rgb(p)
-        missing = id(p) in missing_ids
-        alpha = 0.35 if missing else 1.0
-        edge = MISSING if missing else _shade(rgb, 0.45)
-        lw = (1.6 if missing else 0.6) * edge_scale
-        shades = [0.55, 1.0, 0.92, 0.72, 0.72, 0.8, 0.8] if p["piece"] in SLOPES else [0.55, 1.0, 0.78, 0.78, 0.9, 0.9]
-        for i, (face, k) in enumerate(zip(_piece_faces(p), shades)):
-            if i == 0 or _covered(p, i, filled):
-                continue
-            add(face, _shade(rgb, k), alpha, edge, lw)
-        top = (p["z"] + footprint(p)[2]) * 0.4
-        for cx, cy in stud_cells(p):
-            if (cx, cy, p["z"] + footprint(p)[2]) in filled:
-                continue  # a piece is pressed onto this stud, so it's hidden
-            sides, lid = _stud_faces(cx, cy, top)
-            for k, face in enumerate(sides):
-                if math.cos(2 * math.pi * (k + 0.5) / len(sides) + math.pi / 3) > 0.2:
-                    continue  # back half of the stud never shows from our viewing angle
-                add(face, _shade(rgb, 0.75), alpha, _shade(rgb, 0.75), 0)
-            add(lid, _shade(rgb, 1.08), alpha, edge, 0.4 * edge_scale)
-    ax.add_collection3d(Poly3DCollection(faces, facecolors=fills, edgecolors=edges, linewidths=widths))
-
-
-def _frame(ax, pieces, pad=0.4):
-    """Same scale on all three axes, fitted around the pieces, seen from the front-left like a booklet."""
-    xs = [c for p in pieces for c in (p["x"], p["x"] + footprint(p)[0])]
-    ys = [c for p in pieces for c in (p["y"], p["y"] + footprint(p)[1])]
-    zs = [c for p in pieces for c in (p["z"] * 0.4, (p["z"] + footprint(p)[2]) * 0.4 + STUD_H)]
-    lo = (min(xs) - pad, min(ys) - pad, min(zs))
-    hi = (max(xs) + pad, max(ys) + pad, max(zs) + pad / 2)
-    ax.set_xlim(lo[0], hi[0])
-    ax.set_ylim(lo[1], hi[1])
-    ax.set_zlim(lo[2], hi[2])
-    ax.set_box_aspect([h - l for l, h in zip(lo, hi)], zoom=1.0)
-    ax.view_init(elev=30, azim=-58)
-    ax.set_axis_off()
-    ax.patch.set_alpha(0)
-
-
 def _draw_model(ax, pieces, missing_ids=frozenset(), frame_to=None):
     """Draw pieces; frame_to (default: the same pieces) sets the view, so every page can share one scale."""
-    filled = set().union(*(cells(p) for p in pieces))
-    _add_pieces(ax, pieces, filled, missing_ids)
-    _frame(ax, frame_to or pieces)
+    render(ax, pieces, missing_ids)
+    frame(ax, bounds(frame_to or pieces))
 
 
 def _part_icon(ax, piece, color_of):
     """One loose piece, turned so its long side runs across, for the parts box."""
     p = {"piece": piece, "x": 0, "y": 0, "z": 0, "rot": 0, "color": color_of}
     if piece in SLOPES:
-        p["rot"] = 90  # sloping toward the viewer's right, so the slope shape is easy to see
-    _add_pieces(ax, [p], cells(p), edge_scale=0.8)
-    _frame(ax, [p], pad=0.15)
+        p["rot"] = 90  # sloping down to the right, so the slope shape is easy to see
+    render(ax, [p], edge_width=0.8)
+    frame(ax, bounds([p]), pad=0.15)
 
 
 def _parts_box(fig, rect, parts, title=None):
@@ -136,7 +73,7 @@ def _parts_box(fig, rect, parts, title=None):
     cw = w / cols
     top_gap = 0.05 if title else 0.0
     for i, (piece, color, n, n_missing) in enumerate(parts):
-        icon = fig.add_axes((x + i * cw + 0.008, y + 0.05, cw - 0.016, h - 0.06 - top_gap), projection="3d")
+        icon = fig.add_axes((x + i * cw + 0.008, y + 0.05, cw - 0.016, h - 0.06 - top_gap))
         _part_icon(icon, piece, color)
         label = f"{n}x"
         fig.text(x + i * cw + cw / 2, y + 0.018, label, ha="center", fontsize=14, fontweight="bold",
@@ -167,7 +104,7 @@ def cover_page(build, steps):
     pieces = [p for s in steps for p in s["pieces"]]
     fig.text(0.05, 0.9, build["name"], fontsize=34, fontweight="bold", color=(0.12, 0.16, 0.25))
     fig.text(0.05, 0.85, f"{len(pieces)} pieces · {len(steps)} steps", fontsize=15, color=(0.35, 0.4, 0.5))
-    _draw_model(fig.add_axes((0.15, 0.03, 0.8, 0.8), projection="3d"), pieces)
+    _draw_model(fig.add_axes((0.15, 0.03, 0.8, 0.8)), pieces)
     return fig
 
 
@@ -179,7 +116,7 @@ def step_page(build, steps, number):
     parts = _parts_in(step["pieces"])
     every = [p for s in steps for p in s["pieces"]]
     # Same camera and scale on every page, so the model grows in place like in a printed booklet.
-    _draw_model(fig.add_axes((0.2, 0.02, 0.78, 0.9), projection="3d"), so_far, missing, frame_to=every)
+    _draw_model(fig.add_axes((0.2, 0.02, 0.78, 0.9)), so_far, missing, frame_to=every)
     box_w = min(0.13 * len(parts), 0.6)
     _parts_box(fig, (0.04, 0.72, box_w, 0.22), parts)
     fig.text(0.05, 0.56, str(number), fontsize=64, fontweight="bold", color=(0.1, 0.1, 0.1))

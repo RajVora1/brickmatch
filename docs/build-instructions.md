@@ -76,3 +76,18 @@ short, the later steps are the ones marked missing.
 - The checks catch overlaps and floating pieces, but not a build that falls apart into two loose halves.
 - Colors in the pictures come from the piece type unless the layout gives one. The checklist matches by type
   only, the same as the build matcher.
+
+## LEGO-style booklets
+
+`python -m brickmatch.booklet house_hut --out booklets/` makes a PDF that looks like a printed LEGO booklet:
+
+- A cover page with the finished model.
+- Small steps of at most 4 pieces. Each step has a parts box with "2x" counts, a big step number, and the model
+  drawn with studs at the same scale on every page.
+- A parts list page at the end.
+
+Add `--have '{...}'` to mark missing pieces in red. So far only the Hut has been checked page by page.
+
+All the pictures (booklets and step pictures) are drawn by `brickmatch/render.py`. It cuts every piece into
+stud-by-plate cells and paints them from back to front, so pieces never look like they're inside each other.
+matplotlib's own 3D mode caused that problem, because it sorts whole faces by average depth.
