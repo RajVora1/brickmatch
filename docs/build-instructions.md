@@ -14,7 +14,7 @@ and the Two-story house's 2x4 floor sticks out one stud on each side.
 
 Each step is one layer. The picture has two halves:
 
-- **Left:** the build so far in 3D. Earlier steps are grey, this step's pieces are in color, and pieces you're
+- **Left:** the build so far in 3D. Earlier steps are white, this step's pieces are in color, and pieces you're
   missing are red and see-through.
 - **Right:** a map of just this layer, seen from above, on a stud grid. Columns are numbered left to right and rows
   front to back. Grey squares are the studs you're building on. Slopes have an arrow pointing downhill.
@@ -65,7 +65,7 @@ Add `--have '{"brick_1x4": 6, "brick_1x2": 2}'` to see which pieces get checked 
 ## In the demo
 
 Under the build table there is a **Step-by-step instructions** section. After **Find my pieces**, it switches to
-the best-matching build. Grey pieces come from earlier steps, colored pieces are added in this
+the best-matching build. White pieces come from earlier steps, colored pieces are added in this
 step, and red see-through pieces are the ones you're missing. Pieces are used up in step order, so when you're
 short, the later steps are the ones marked missing.
 
@@ -86,7 +86,8 @@ short, the later steps are the ones marked missing.
   drawn with studs at the same scale on every page.
 - A parts list page at the end.
 
-Add `--have '{...}'` to mark missing pieces in red. So far only the Hut has been checked page by page.
+Add `--have '{...}'` to mark missing pieces in red. All 24 booklets were checked page by page. The demo has a
+download button for the booklet of the build you pick.
 
 All the pictures (booklets and step pictures) are drawn by `brickmatch/render.py`. It cuts every piece into
 stud-by-plate cells and paints them from back to front, so pieces never look like they're inside each other.

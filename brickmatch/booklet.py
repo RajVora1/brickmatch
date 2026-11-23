@@ -116,9 +116,11 @@ def step_page(build, steps, number):
     parts = _parts_in(step["pieces"])
     every = [p for s in steps for p in s["pieces"]]
     # Same camera and scale on every page, so the model grows in place like in a printed booklet.
-    _draw_model(fig.add_axes((0.2, 0.02, 0.78, 0.9)), so_far, missing, frame_to=every)
     box_w = min(0.13 * len(parts), 0.6)
     _parts_box(fig, (0.04, 0.72, box_w, 0.22), parts)
+    # The model goes to the right of the parts box, so a wide model never runs underneath it.
+    left = max(0.2, 0.04 + box_w + 0.03)
+    _draw_model(fig.add_axes((left, 0.02, 0.98 - left, 0.9)), so_far, missing, frame_to=every)
     fig.text(0.05, 0.56, str(number), fontsize=64, fontweight="bold", color=(0.1, 0.1, 0.1))
     fig.text(0.97, 0.03, f"{number} / {len(steps)}", ha="right", fontsize=10, color=(0.5, 0.5, 0.5))
     return fig

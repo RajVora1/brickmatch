@@ -10,6 +10,7 @@ and step-by-step instructions for a build with your pieces checked off.
 import argparse
 import colorsys
 import io
+import tempfile
 from collections import Counter
 from pathlib import Path
 
@@ -17,6 +18,7 @@ import gradio as gr
 import yaml
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
+from brickmatch.booklet import make_booklet
 from brickmatch.instructions import draw_step, first_stuck_step, make_steps, step_text, step_title
 from brickmatch.match import load_builds, rank_builds
 from brickmatch.pipeline import detect_pieces, load_models
@@ -59,7 +61,7 @@ def instructions(build_id, counts):
     import matplotlib.pyplot as plt  # noqa: PLC0415
     build = next((b for b in load_builds() if b["id"] == build_id), None)
     if build is None or not build.get("layout"):
-        return [], "This build doesn't have step-by-step instructions yet."
+        return [], "This build doesn't have step-by-step instructions yet.", None
     steps = make_steps(build, counts)
     gallery = []
     for s in steps:
@@ -81,7 +83,8 @@ def instructions(build_id, counts):
             lines.append(f"**You can build up to step {stuck - 1}.** Pieces drawn in red are the ones you're missing.")
     for s in steps:
         lines.append(f"**{step_title(s)}**  \n" + "  \n".join(step_text(s)))
-    return gallery, "\n\n".join(lines)
+    booklet, _ = make_booklet(build, counts, tempfile.mkdtemp(prefix="booklet_"))
+    return gallery, "\n\n".join(lines), str(booklet)
 
 
 def best_with_steps(counts, current):
@@ -134,18 +137,19 @@ def make_app(models, examples=()):
         counts = gr.State(None)
         gr.Markdown("## Step-by-step instructions\nOne step per layer. Each picture shows the build so far (left) "
                     "and a map of the new layer seen from above (right), with columns counted from the left and rows "
-                    "from the front. The numbers match the list. Grey pieces are from earlier steps, colored ones are "
+                    "from the front. The numbers match the list. White pieces are from earlier steps, colored ones are "
                     "added in this step, and red see-through ones are pieces you're missing.")
         with gr.Row():
             pick = gr.Dropdown(with_steps, value=with_steps[0][1] if with_steps else None, label="Build")
             show = gr.Button("Show steps")
         step_pics = gr.Gallery(label="Steps (click one to see it bigger)", columns=2, height="auto",
                                object_fit="contain")
+        booklet = gr.File(label="LEGO-style booklet (PDF) for this build")
         checklist = gr.Markdown()
         go.click(run, [photo, conf], [boxed, summary, counts_tbl, builds_tbl, counts]).then(
-            best_with_steps, [counts, pick], pick).then(instructions, [pick, counts], [step_pics, checklist])
-        show.click(instructions, [pick, counts], [step_pics, checklist])
-        pick.input(instructions, [pick, counts], [step_pics, checklist])
+            best_with_steps, [counts, pick], pick).then(instructions, [pick, counts], [step_pics, checklist, booklet])
+        show.click(instructions, [pick, counts], [step_pics, checklist, booklet])
+        pick.input(instructions, [pick, counts], [step_pics, checklist, booklet])
     return app
 
 
