@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BrickMatch: build something new from the bricks you have</title>
+<meta name="description" content="Snap a photo of your loose LEGO pieces. BrickMatch counts them and shows you what you can build, with step-by-step instructions and a 3D view.">
+<meta name="theme-color" content="#d01012">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="config.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="logo" href="#top" aria-label="BrickMatch home">
+    <svg viewBox="0 0 40 34" aria-hidden="true"><use href="#brick-logo"/></svg>
+    <span>Brick<b>Match</b></span>
+  </a>
+  <nav>
+    <a href="#start">Find my pieces</a>
+    <a href="#builds">Builds</a>
+    <a href="#how">How it works</a>
+  </nav>
+  <span id="server-pill" class="pill pill-wait" title="The piece finder runs on a free server that naps when nobody is using it.">
+    <i></i><span>Checking the brick sorter…</span>
+  </span>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="kicker">Reuse, rebuild, repeat</p>
+    <h1>What can you build with the bricks <span class="hl">you already have?</span></h1>
+    <p class="lede">Snap a photo of your loose pieces. BrickMatch finds and counts every brick, shows you the builds you can make, and walks you through them step by step.</p>
+    <div class="cta-row">
+      <a class="brick-btn red" href="#start">Snap my pile</a>
+      <a class="brick-btn yellow" href="#builds">Browse builds</a>
+    </div>
+    <ul class="hero-facts">
+      <li><b>8</b> piece types</li>
+      <li><b id="fact-builds">24</b> builds</li>
+      <li><b>0</b> new sets to buy</li>
+    </ul>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="plate">
+      <img class="float f1" src="generated/builds/house_cottage.png" alt="">
+      <img class="float f2" src="generated/builds/tower_lighthouse.png" alt="">
+      <img class="float f3" src="generated/builds/bridge_footbridge.png" alt="">
+      <img class="float f4" src="generated/pieces/slope45_2x2.png" alt="">
+      <img class="float f5" src="generated/pieces/brick_2x4.png" alt="">
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 1: PHOTO ============ -->
+<section id="start" class="section">
+  <div class="section-head">
+    <span class="stepnum">1</span>
+    <div>
+      <h2>Show us your bricks</h2>
+      <p>Spread your pieces out on a plain surface and take a photo from above. Pieces that don't touch each other are easiest to find.</p>
+    </div>
+  </div>
+
+  <div class="start-grid">
+    <label id="drop" class="drop" tabindex="0">
+      <input id="file" type="file" accept="image/*" hidden>
+      <span class="drop-icon" aria-hidden="true">
+        <svg viewBox="0 0 64 52"><rect x="4" y="12" width="56" height="36" rx="6"/><rect x="20" y="4" width="24" height="12" rx="3"/><circle cx="32" cy="30" r="11"/><circle cx="32" cy="30" r="5"/></svg>
+      </span>
+      <b>Drop a photo here</b>
+      <span>or tap to take one / choose a file</span>
+    </label>
+
+    <div class="side-card">
+      <h3>No pieces handy? Try one of my piles</h3>
+      <p class="muted small">Photos the model never saw while training. You'll see the real counts next to what it found.</p>
+      <div id="samples" class="samples"></div>
+      <div class="or"><span>or</span></div>
+      <button id="type-btn" class="brick-btn blue small" type="button">Type in what I have</button>
+      <details class="advanced">
+        <summary>Advanced</summary>
+        <label class="slider">Detector confidence <output id="conf-out">0.50</output>
+          <input id="conf" type="range" min="0.1" max="0.9" step="0.05" value="0.5">
+        </label>
+        <p class="muted small">Lower finds more pieces but may box things that aren't bricks. Higher only keeps pieces it's sure about.</p>
+      </details>
+    </div>
+  </div>
+  <div id="detect-status" class="status" hidden></div>
+</section>
+
+<!-- ============ STEP 2: CHECK ============ -->
+<section id="check" class="section" hidden>
+  <div class="section-head">
+    <span class="stepnum">2</span>
+    <div>
+      <h2>Check your pieces</h2>
+      <p id="check-intro">The model can get a piece wrong (a 1x4 brick seen from the side can look like a 2x4). Fix any count with − and +. Builds update as you go.</p>
+    </div>
+  </div>
+  <div class="check-grid">
+    <figure id="photo-wrap" class="photo-card">
+      <canvas id="photo"></canvas>
+      <figcaption>
+        <span id="photo-summary"></span>
+        <label class="toggle"><input id="show-labels" type="checkbox" checked> Labels</label>
+      </figcaption>
+    </figure>
+    <div class="counts-card">
+      <div class="counts-head">
+        <h3>Your pieces <span id="total-pill" class="count-pill">0</span></h3>
+        <button id="reset-counts" class="link-btn" type="button">Undo my changes</button>
+      </div>
+      <div id="answer" class="answer" hidden></div>
+      <ul id="counts" class="counts"></ul>
+      <details class="more-pieces">
+        <summary>More piece types <span class="muted">(the photo model doesn't know these yet)</span></summary>
+        <ul id="counts-more" class="counts"></ul>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 3: BUILDS ============ -->
+<section id="builds" class="section">
+  <div class="section-head">
+    <span class="stepnum">3</span>
+    <div>
+      <h2 id="builds-title">Pick a build</h2>
+      <p id="builds-intro">All 24 builds use only the 8 basic piece types. Find your pieces first and they'll be ranked by how many you already have.</p>
+    </div>
+  </div>
+  <div id="tabs" class="tabs" role="tablist"></div>
+  <div id="build-grid" class="build-grid"></div>
+</section>
+
+<!-- ============ STEP 4: BUILD IT ============ -->
+<section id="build" class="section" hidden>
+  <div class="section-head">
+    <span class="stepnum">4</span>
+    <div>
+      <h2 id="build-name">Build it</h2>
+      <p id="build-desc"></p>
+    </div>
+  </div>
+  <div id="build-status" class="build-status"></div>
+  <div class="build-layout">
+    <div class="viewer-card">
+      <div id="viewer" class="viewer"><div class="viewer-empty">The 3D view appears here.</div></div>
+      <div class="build-actions">
+        <button id="dl-booklet" class="brick-btn yellow small" type="button">Download booklet (PDF)</button>
+        <button id="dl-3d" class="brick-btn blue small" type="button">Save 3D view</button>
+      </div>
+    </div>
+    <aside class="shopping">
+      <h3>Parts list</h3>
+      <ul id="parts"></ul>
+      <p id="shop-note" class="muted small"></p>
+    </aside>
+  </div>
+  <h3 class="steps-title">Step by step</h3>
+  <p class="muted">One step per layer. Left: the build so far, new pieces in color. Right: the new layer seen from above, columns counted from the left and rows from the front. Red see-through pieces are ones you're missing.</p>
+  <ol id="steps" class="steps"></ol>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section id="how" class="section how">
+  <div class="section-head plain">
+    <div>
+      <h2>How it works</h2>
+      <p>Two small neural networks do the seeing. Everything after that is plain counting and search.</p>
+    </div>
+  </div>
+  <ol class="pipeline">
+    <li class="p-red">
+      <span class="pnum">1</span>
+      <h3>Find every piece</h3>
+      <p>A YOLO detector, fine-tuned on hand-labeled pile photos, draws a box around each piece. It only learns one thing: "this is a piece".</p>
+    </li>
+    <li class="p-blue">
+      <span class="pnum">2</span>
+      <h3>Name each one</h3>
+      <p>Each box is cropped and a ResNet-18 classifier decides which of 8 piece types it is: bricks 1x1 to 2x4, a 1x2 plate and two slopes.</p>
+    </li>
+    <li class="p-yellow">
+      <span class="pnum">3</span>
+      <h3>Read the color</h3>
+      <p>The middle of each crop is matched to the closest of 8 brick colors. No training needed for that part.</p>
+    </li>
+    <li class="p-green">
+      <span class="pnum">4</span>
+      <h3>Match builds</h3>
+      <p>Your counts are compared with the parts list of every build, ranked by how many pieces you already have, with the missing ones listed.</p>
+    </li>
+  </ol>
+  <div class="numbers">
+    <div class="num"><b>96%</b><span>of pieces in real photos named right (115 of 120 test crops)</span></div>
+    <div class="num"><b>99.9%</b><span>of pieces found on a held-out pile (recall; pieces weren't touching)</span></div>
+    <div class="num"><b>24</b><span>hand-designed builds, each with a checked layout, 3D view and booklet</span></div>
+  </div>
+  <div class="tips">
+    <h3>Tips for a good photo</h3>
+    <ul>
+      <li>Plain, even background (a table, a sheet of paper)</li>
+      <li>Pieces spread out, not touching or stacked</li>
+      <li>Shoot from straight above, in good light</li>
+      <li>Fill the frame with the pieces</li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="studs-row" aria-hidden="true"></div>
+  <p><b>BrickMatch</b> is a student capstone project by Raj. <a href="https://github.com/RajVora1/brickmatch">Code on GitHub</a>.</p>
+  <p class="muted small">LEGO® is a trademark of the LEGO Group, which does not sponsor, authorize or endorse this site. Photos you upload are only used to find pieces and are not stored.</p>
+</footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="brick-logo" viewBox="0 0 40 34">
+    <rect x="5" y="2" width="10" height="7" rx="2" fill="#d01012"/><rect x="25" y="2" width="10" height="7" rx="2" fill="#d01012"/>
+    <rect x="5" y="2" width="10" height="3" rx="1.5" fill="#ff5a4e"/><rect x="25" y="2" width="10" height="3" rx="1.5" fill="#ff5a4e"/>
+    <rect x="1" y="7" width="38" height="25" rx="4" fill="#d01012"/><rect x="1" y="26" width="38" height="6" rx="3" fill="#9c0a0c"/>
+  </symbol>
+</svg>
+<script src="app.js"></script>
+</body>
+</html>

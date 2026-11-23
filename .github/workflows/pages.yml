@@ -1,0 +1,52 @@
+# Publishes the website (web/) to GitHub Pages on every push to main.
+# Setup (once): docs/hosting.md, Part 4. Settings > Pages > Source: "GitHub Actions", and the repository
+# variable BRICKMATCH_API_URL set to the Space's address (e.g. https://rajvora1-brickmatch.hf.space).
+name: Deploy website to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths: ["web/**", "builds/**", "configs/**", "brickmatch/**", "server/site_assets.py",
+            ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Make build pictures and the catalog
+        run: |
+          pip install -q matplotlib pyyaml
+          python -m server.site_assets
+      - name: Point the site at the API
+        env:
+          API_URL: ${{ vars.BRICKMATCH_API_URL }}
+        run: |
+          if [ -z "$API_URL" ]; then echo "::warning::BRICKMATCH_API_URL isn't set, so photos won't work on the site yet (docs/hosting.md, Part 4)."; fi
+          printf 'window.BRICKMATCH_API = "%s";\n' "$API_URL" > web/config.js
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,45 @@
+# Uploads the API server (server/, brickmatch/, ...) to the Hugging Face Space on every push to main.
+# Setup (once): docs/hosting.md, Part 3. Needs the repository secret HF_TOKEN (a "write" token)
+# and the repository variable HF_SPACE (e.g. RajVora1/brickmatch).
+name: Deploy API to Hugging Face
+
+on:
+  push:
+    branches: [main]
+    paths: ["brickmatch/**", "server/**", "web/**", "builds/**", "configs/**", "train/**", "space/**",
+            ".github/workflows/deploy-space.yml"]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: vars.HF_SPACE != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Collect the files the Space needs
+        run: |
+          mkdir _space
+          cp -r brickmatch server web builds configs train _space/
+          cp space/Dockerfile space/README.md _space/
+          rm -rf _space/web/generated
+          find _space -name "__pycache__" -prune -exec rm -rf {} +
+      - name: Upload to the Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE: ${{ vars.HF_SPACE }}
+        run: |
+          pip install -q huggingface_hub
+          python - <<'PY'
+          import os
+          from huggingface_hub import HfApi
+          api = HfApi(token=os.environ["HF_TOKEN"])
+          api.upload_folder(folder_path="_space", repo_id=os.environ["HF_SPACE"], repo_type="space",
+                            commit_message=f"Deploy {os.environ['GITHUB_SHA'][:7]} from GitHub",
+                            # Remove files deleted on GitHub, but only in our own folders.
+                            delete_patterns=[f"{d}/**" for d in ("brickmatch", "server", "web", "builds",
+                                                                 "configs", "train")])
+          print("Uploaded. The Space rebuilds itself now (a few minutes).")
+          PY

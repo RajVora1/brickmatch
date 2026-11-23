@@ -12,3 +12,7 @@ __pycache__/
 .ipynb_checkpoints/
 .DS_Store
 booklets/
+# Website: made by `python -m server.site_assets` on deploy; local model weights for the API server
+web/generated/
+weights/
+_space/

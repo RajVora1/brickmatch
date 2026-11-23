@@ -2,6 +2,8 @@
 
 Take a photo of your loose LEGO pieces, find out what you can build with them.
 
+**Website:** https://rajvora1.github.io/brickmatch/ (once set up, see `docs/hosting.md`). Run it locally with `uvicorn server.app:app --port 7860`.
+
 ```
 photo ─> [stage 1: YOLO finds every piece] ─> crops ─> [stage 2: CNN / ViT names each piece] ─> counts by type + color ─> [matcher] ─> ranked builds + missing pieces
           trained model, one class "piece"              trained model, 12-15 piece types          color read from pixels      plain search
@@ -28,6 +30,7 @@ Two-stage design (mentor's advice): finding pieces and naming them are separate 
 | `brickmatch/match.py` | Ranks builds by coverage and lists missing pieces |
 | `eval/evaluate.py` | Counting error + "are recommended builds really buildable?" |
 | `brickmatch/demo.py` | Web demo: photo in, boxed pieces + counts + builds out (see `docs/demo.md`) |
+| `web/`, `server/` | Public website (GitHub Pages) and its API (Hugging Face Space); hosting guide in `docs/hosting.md` |
 | `docs/` | Labeling guide, dataset notes |
 
 ## Starting piece list (recommendation, adjust freely)
