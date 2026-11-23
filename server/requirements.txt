@@ -1,0 +1,11 @@
+# What the website's API server needs (the Hugging Face Space installs these).
+# torch and torchvision are installed first from the CPU-only index in space/Dockerfile (much smaller).
+fastapi>=0.110
+uvicorn>=0.29
+python-multipart
+pydantic>=2
+pillow
+pyyaml
+matplotlib
+ultralytics>=8.3
+huggingface_hub>=0.23
